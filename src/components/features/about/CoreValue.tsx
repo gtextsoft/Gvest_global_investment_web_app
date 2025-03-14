@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import mission from "../../../../public/icons/mission.svg";
-import { Eye, HandshakeIcon } from "lucide-react";
+import { Eye } from "lucide-react";
 import FaRegHandshake from "../../../../public/icons/hand.svg"
 
 const CoreValue = () => {

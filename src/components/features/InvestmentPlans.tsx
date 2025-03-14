@@ -5,7 +5,7 @@ import nairascheme from "../../../public/images/investmentplans/nairascheme.png"
 import dollarscheme from "../../../public/images/investmentplans/dollarscheme.png";
 import poundScheme from "../../../public/images/investmentplans/poundScheme.png";
 import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 const investmentOptions = [
   {
@@ -75,7 +75,7 @@ const investmentOptions = [
 ];
 
 const InvestmentPlans = () => {
-  const router = useRouter();
+  // const router = useRouter();
 
   return (
     <section
@@ -111,17 +111,17 @@ const InvestmentPlans = () => {
                 }`}
               >
                 <div className="grid gap-7">
-                  <h3 className="font-montserrat text-Black-950 font-semibold text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+                  <h3 className="font-montserrat text-black-950 font-semibold text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
                     {investment.title}
                   </h3>
                   <div className="grid gap-[10px]">
-                    <h4 className="text-xl md:text-3xl lg:text-[32px] font-lora font-medium text-Black-900">
+                    <h4 className="text-xl md:text-3xl lg:text-[32px] font-lora font-medium text-black-900">
                       {investment.subtitle}
                     </h4>
-                    <p className="text-base text-left md:text-lg lg:text-xl font-inter text-Black-800 font-normal">
+                    <p className="text-base text-left md:text-lg lg:text-xl font-inter text-black-800 font-normal">
                       {investment.description}
                     </p>
-                    <ul className="grid gap-1 text-base md:text-lg lg:text-xl font-inter text-Black-800 font-normal list-disc pl-8">
+                    <ul className="grid gap-1 text-base md:text-lg lg:text-xl font-inter text-black-800 font-normal list-disc pl-8">
                       {investment.benefits.map((benefit, index) => (
                         <li key={index}>{benefit}</li>
                       ))}
@@ -132,7 +132,7 @@ const InvestmentPlans = () => {
                 <Button
                   variant="default"
                   size="lg"
-                  className={`shadow-2xl py-3 w-fit ${investment.btnBgColor} ${investment.textColor} border ${investment.borderColor} text-${investment.textColor} transition-all duration-300 ease-in-out`}
+                  className={`py-3 w-fit ${investment.btnBgColor} ${investment.textColor} border ${investment.borderColor} text-${investment.textColor} transition-all duration-300 ease-in-out`}
                   // onClick={() => router.push({investment.link})}
                 >
                   See how it works

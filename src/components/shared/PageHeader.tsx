@@ -10,7 +10,7 @@ interface PageHeaderProps {
 const PageHeader: React.FC<PageHeaderProps> = ({
   title,
   height = "",
-  bgGradient = "bg-gradient-to-b from-white to-[#FFF0F0] to-Lonestar-50",
+  bgGradient = "bg-gradient-to-b from-white to-[#FFF0F0] to-lonestar-100",
   padding = "pt-24 md:pt-23 pb-14",
 }) => {
   return (

@@ -57,7 +57,7 @@ export default function Footer() {
           </div>
           <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
             <div className="flex flex-col gap-5">
-              <p className="font-semibold text-lg h-fit text-Lonestar-950">
+              <p className="font-semibold text-lg h-fit text-lonestar-950">
                 Company
               </p>
               <div className="grid gap-2">
@@ -86,7 +86,7 @@ export default function Footer() {
             </div>
 
             <div className="flex flex-col gap-5">
-              <p className="font-semibold text-lg h-fit text-Lonestar-950">
+              <p className="font-semibold text-lg h-fit text-lonestar-950">
                 Support
               </p>
               <div className="grid gap-2">
@@ -115,7 +115,7 @@ export default function Footer() {
             </div>
 
             <div className="flex flex-col gap-5">
-              <p className="font-semibold text-lg h-fit text-Lonestar-950">
+              <p className="font-semibold text-lg h-fit text-lonestar-950">
                 Contact Us
               </p>
 

@@ -10,10 +10,10 @@ const InvestorsTestimonies = () => {
     <section className="max-w-[1400px] px-5 md:px-10 mx-auto py-28 bg-[#f7f7f7]">
       <div className="flex flex-col gap-20 md:items-center justify-center">
         <div className="flex flex-col md:items-center justify-center gap-5">
-          <h2 className="text-4xl md:text-5xl font-semibold font-montserrat text-Black-950">
+          <h2 className="text-4xl md:text-5xl font-semibold font-montserrat text-black-950">
             What Our Investors Are Saying
           </h2>
-          <p className="text-base md:text-2xl font-normal font-lora text-Black-900 max-w-3xl lg:max-w-4xl md:text-center">
+          <p className="text-base md:text-2xl font-normal font-lora text-black-900 max-w-3xl lg:max-w-4xl md:text-center">
             At GVest Global, we prioritize building trust and delivering value.
             Hear directly from our satisfied investors who have experienced the
             power of secure, high-growth real estate investments.

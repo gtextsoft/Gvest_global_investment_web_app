@@ -36,7 +36,7 @@ const LeadershipSection = () => {
   ];
   return (
     <div className="grid gap-10 md:gap-20 max-w-[1400px] justify-center w-full px-5 md:px-10 mx-auto py-[120px] bg-[#f7f7f7]">
-      <h2 className="text-2xl md:text-center md:text-3xl font-semibold font-montserrat text-Black-950 leading-snug">
+      <h2 className="text-2xl md:text-center md:text-3xl font-semibold font-montserrat text-black-950 leading-snug">
         Meet Our Leadership Team
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-2 md:gap-6">

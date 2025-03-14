@@ -13,9 +13,6 @@ const TermConditions = () => {
       </Head>
       <PageHeader title="TERMS AND CONDITION" />
       <section className="w-[90%] max-w-5xl mx-auto py-12">
-        {/* <h2 className='text-3xl sm:text-5xl font-bold py-8 text-center'>
-          Terms And Conditions
-        </h2> */}
         <article>
           <span className="font-semibold">
             {" "}
