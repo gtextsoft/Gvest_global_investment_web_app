@@ -81,7 +81,7 @@ const Header = () => {
             <Button
               variant="secondary"
               size="lg"
-              className="shadow-2xl w-fit transition-all duration-300 ease-in-out"
+              className="w-fit transition-all duration-300 ease-in-out"
               onClick={() => router.push("/sign-in")}
             >
               Login
@@ -89,7 +89,7 @@ const Header = () => {
             <Button
               variant="default"
               size="lg"
-              className="shadow-2xl w-fit transition-all duration-300 ease-in-out"
+              className="w-fit transition-all duration-300 ease-in-out"
               onClick={() => router.push("/sign-up")}
             >
               Register

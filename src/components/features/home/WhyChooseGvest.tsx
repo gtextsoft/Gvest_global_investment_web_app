@@ -16,7 +16,7 @@ const WhyChooseGvest = () => {
       ),
       title: "Fractional Ownership",
       contBg: "#cacef9",
-      textColor: "#1A237E",
+      textColor: "text-[#1A237E]",
       textColor2: "#5059B4",
       description:
         "Invest in premium properties with as little as ₦10,000, making real estate accessible to everyone.",
@@ -27,7 +27,7 @@ const WhyChooseGvest = () => {
       ),
       title: "Guaranteed ROI",
       contBg: "#f5d5ff",
-      textColor: "#391448",
+      textColor: "text-[#391448]",
       textColor2: "#380C49",
       description:
         "Earn up to 90% returns over 10 years with a transparent and predictable investment model.",
@@ -38,7 +38,7 @@ const WhyChooseGvest = () => {
       ),
       title: "Multi-Currency Investments",
       contBg: "#f1e4ba",
-      textColor: "#362903",
+      textColor: "text-[#362903]",
       textColor2: "#3F310A",
       description:
         "Seamlessly invest in Naira, Dollars, or Pounds, without currency limitations or conversion worries.",
@@ -49,7 +49,7 @@ const WhyChooseGvest = () => {
       ),
       title: "Secure & Regulated",
       contBg: "#cff9cf",
-      textColor: "#008000",
+      textColor: "text-[#008000]",
       textColor2: "#408C40",
       description:
         "Backed by trusted institutions, GVest ensures top-tier security and investor protection.",
@@ -59,10 +59,10 @@ const WhyChooseGvest = () => {
     <section className="max-w-[1400px] px-5 md:px-10 mx-auto py-20 md:py-28 bg-white">
       <div className="flex flex-col gap-10 md:gap-20 items-center justify-center">
         <div className="flex flex-col md:items-center justify-center gap-5">
-          <h2 className="text-4xl md:text-5xl font-semibold font-montserrat text-Black-950 leading-snug">
+          <h2 className="text-4xl md:text-5xl font-semibold font-montserrat text-black-950 leading-snug">
             Why Choose GVest?
           </h2>
-          <p className="text-lg md:text-2xl font-normal font-lora text-Black-900 max-w-2xl text-left md:text-center">
+          <p className="text-lg md:text-2xl font-normal font-lora text-black-900 max-w-2xl text-left md:text-center">
             Smarter Investing, Greater Returns—Built for secure, high-growth
             real estate investments.
           </p>
