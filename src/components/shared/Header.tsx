@@ -36,8 +36,8 @@ const Header = () => {
   return (
     <>
       <header className="flex items-center justify-center min-h-[40px] w-full sticky top-0 z-50 pt-5">
-        <section className="relative w-full max-w-7xl pl-3 sm:pl-5 pr-6 md:pr-8 mx-5 flex items-center justify-between shadow-md py-4 rounded-full bg-[#FDF3F3]">
-          <Link href="/">
+      <section className="relative w-full max-w-7xl pl-3 sm:pl-5 pr-6 md:pr-8 mx-5 flex items-center justify-between shadow-md py-4 rounded-full bg-white">
+      <Link href="/">
             <Image
               width={120}
               height={70}

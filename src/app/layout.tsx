@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Lora, Montserrat } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/shared/Header";
-import Footer from "@/components/shared/Footer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -33,9 +31,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${montserrat.variable} ${lora.variable} antialiased`}
       >
-        <Header />
         <main className="">{children}</main>
-        <Footer />
       </body>
     </html>
   );
