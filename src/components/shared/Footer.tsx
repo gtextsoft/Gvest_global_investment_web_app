@@ -119,7 +119,7 @@ export default function Footer() {
                 Contact Us
               </p>
 
-              <p>309 Close, Banana Island, Ikoyi, Lagos State.</p>
+              <p>4 Joe Faraday, Mojisola Onikoyi Estate, Banana Island, Ikoyi, Lagos, Nigeria</p>
 
               <div className="grid gap-1">
                 <a
@@ -147,7 +147,7 @@ export default function Footer() {
               </Link>
             </div>
           </div>
-          <p className="my-12 md:my-[40px] text-center text-base font-normal">
+          <p className="my-12 md:my-4 text-center text-base font-normal">
             Copyright &copy; {new Date().getFullYear()}.
             <Link href="https://gtextholdings.com">
               Created by Gtext Holdings
