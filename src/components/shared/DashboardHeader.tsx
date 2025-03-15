@@ -1,7 +1,6 @@
 "use client";
 
-import { Menu, UserRound } from "lucide-react";
-import UserAvatar from "./UserAvatar";
+import { UserRound } from "lucide-react";
 
 export default function DashboardHeader() {
   return (
