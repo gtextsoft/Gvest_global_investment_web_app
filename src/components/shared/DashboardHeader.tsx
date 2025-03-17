@@ -1,13 +1,18 @@
 "use client";
 
-import { UserRound } from "lucide-react";
+import { AvatarDropdown } from "../features/dashboard/AvatarDropdown";
+import { AvatarWithNotification } from "../features/dashboard/AvatarNotification";
 
 export default function DashboardHeader() {
   return (
-    <header className="bg-white shadow p-4 flex justify-between items-center">
-      <h1 className="text-lg font-semibold">Dashboard</h1>
-      <div className="flex items-center gap-4">
-        <UserRound className="w-8 h-8 text-black-600 bg-black-50 border rounded-full p-1" />
+    <header className="bg-white shadow-xl border-b p-4 flex justify-between items-center">
+      <div className="container justify-between px-3 flex w-full mx-auto">
+        <h1 className="text-lg font-semibold">Dashboard</h1>
+
+        <div className="flex items-center gap-1">
+          <AvatarWithNotification />
+          <AvatarDropdown />
+        </div>
       </div>
     </header>
   );
