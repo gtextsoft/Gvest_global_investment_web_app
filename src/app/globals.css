@@ -128,6 +128,7 @@
 
 
 @theme {
+  --color-white: #ffffff;
   --color-pry: #A1000F;
   --color-gray: #889C9B;
   --color-apricot: #FFF2D3;
@@ -200,4 +201,32 @@
 
 .fade-out {
   animation: fadeOut 0.3s ease-in-out;
+}
+
+
+
+/* For Webkit Browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #6e0000; /* Dark Red */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #520000; /* Darker red on hover */
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #6e0000 #f1f1f1;
 }

@@ -1,5 +1,6 @@
 import React from "react";
-import { UserCircle } from "lucide-react";
+import { UserRound } from "lucide-react";
+import Image from "next/image";
 
 interface AvatarProps {
   src?: string; // Optional image source
@@ -14,17 +15,16 @@ const UserAvatar: React.FC<AvatarProps> = ({
 }) => {
   return (
     <div
-      className="rounded-full overflow-hidden flex items-center justify-center bg-gray-200"
+      className="rounded-full overflow-hidden flex items-center justify-center bg-gray-100"
       style={{ width: size, height: size }}
     >
       {src ? (
-        <img src={src} alt={alt} className="w-full h-full object-cover" />
+        <Image src={src} alt={alt} className="w-full h-full object-cover" />
       ) : (
-        <UserCircle size={size * 0.6} className="text-gray-600" />
+        <UserRound size={size * 0.6} className="text-lonestar-950 size-10/12 p-1" />
       )}
     </div>
   );
 };
 
-
-export default UserAvatar
+export default UserAvatar;
