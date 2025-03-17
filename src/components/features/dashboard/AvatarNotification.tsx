@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 
 export function AvatarWithNotification() {
-  const [notifications, setNotifications] = React.useState([
+  const [notifications] = React.useState([
     { id: 1, message: "New message from Alex", type: "message" },
     { id: 2, message: "Project approved!", type: "success" },
   ]);
