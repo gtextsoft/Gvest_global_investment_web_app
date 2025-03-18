@@ -56,11 +56,11 @@ const InvestmentId = () => {
                         {filterData[0].type}
                       </li>
                     </ul>
-                    <p className="text-base italic text-black-800 underline">
+                    <p className="text-lg mt-5 italic text-black-950 underline">
                       {filterData[0].slots} slots remaining
                     </p>
                   </div>
-                  <Button variant='default' className="px-10 w-fit mt-10">invest now</Button>
+                  <Button variant='default' className="px-10 w-fit mt-5">invest now</Button>
                 </div>
               </div>
             ) : (
