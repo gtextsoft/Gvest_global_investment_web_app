@@ -9,69 +9,15 @@ import {
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import dollarScheme from "../../../../../public/images/investmentplans/dollarscheme.png";
-import nairaScheme from "../../../../../public/images/investmentplans/nairascheme.png";
-import poundScheme from "../../../../../public/images/investmentplans/poundScheme.png";
 import { BriefcaseBusiness, ChartNoAxesCombined, Clock } from "lucide-react";
-
-const investments = [
-  {
-    id: 1,
-    name: "Fractional Ownership Naira Scheme",
-    type: "simple",
-    currency: "naira",
-    currencySign: "NGN",
-    image: nairaScheme,
-    price: 5000,
-    duration: "24-month Investment period",
-    roi: "12% Annual ROI",
-    investmentType: "Fixed Deposit",
-    slots: 3,
-  },
-  {
-    id: 2,
-    name: "Jasper Ibeju Lekki Legacy",
-    type: "compound",
-    currency: "naira",
-    currencySign: "NGN",
-    image: nairaScheme,
-    price: 10000,
-    duration: "36-month Investment period",
-    roi: "15% Annual ROI",
-    investmentType: "Growth Fund",
-    slots: 5,
-  },
-  {
-    id: 3,
-    name: "Sapphire Ikorodu Heritage",
-    type: "simple",
-    currency: "dollar",
-    currencySign: "USD",
-    image: dollarScheme,
-    price: 8000,
-    duration: "30-month Investment period",
-    roi: "14% Annual ROI",
-    investmentType: "Real Estate Fund",
-    slots: 2,
-  },
-  {
-    id: 4,
-    name: "Euro Investment Plan",
-    type: "compound",
-    currency: "euro",
-    currencySign: "GBP",
-    image: poundScheme,
-    price: 12000,
-    duration: "48-month Investment period",
-    roi: "16% Annual ROI",
-    investmentType: "Wealth Accumulation",
-    slots: 4,
-  },
-];
+import { useRouter } from "next/navigation";
+import { investments } from "@/lib/constant";
 
 const InvestmentPage = () => {
   const [selectedType, setSelectedType] = useState<string>("all");
   const [selectedCurrency, setSelectedCurrency] = useState<string>("all");
+
+  const router = useRouter();
 
   const filteredInvestments = investments.filter((inv) => {
     return (
@@ -83,38 +29,40 @@ const InvestmentPage = () => {
   return (
     <section className="flex flex-col w-full gap-2">
       <div className="flex flex-col gap-10 px-5">
-        <div className="flex flex-col gap-6 px-6 py-6 md:p-6 bg-white rounded-b-xl h-screen">
-          <h2 className="font-medium text-xl">Smart Investment</h2>
-          <div className="flex items-center gap-2">
-            {/* Step 1: Select Investment Type */}
-            <Select onValueChange={setSelectedType} value={selectedType}>
-              <SelectTrigger className="w-full md:w-[250px]">
-                <SelectValue placeholder="Select Investment Type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Investments</SelectItem>
-                <SelectItem value="simple">Simple Investment</SelectItem>
-                <SelectItem value="compound">Compound Investment</SelectItem>
-              </SelectContent>
-            </Select>
+        <div className="flex flex-col gap-6 min-h-screen">
+          <div className="flex flex-col gap-6 px-6 py-6 md:p-6 bg-white rounded-b-xl">
+            <h2 className="font-medium text-xl">Smart Investment</h2>
+            <div className="flex items-center gap-2">
+              {/* Step 1: Select Investment Type */}
+              <Select onValueChange={setSelectedType} value={selectedType}>
+                <SelectTrigger className="w-full md:w-[250px]">
+                  <SelectValue placeholder="Select Investment Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Investments</SelectItem>
+                  <SelectItem value="simple">Simple Investment</SelectItem>
+                  <SelectItem value="compound">Compound Investment</SelectItem>
+                </SelectContent>
+              </Select>
 
-            {/* Step 2: Select Currency */}
-            <Select
-              onValueChange={setSelectedCurrency}
-              value={selectedCurrency}
-            >
-              <SelectTrigger className="w-full md:w-[250px]">
-                <SelectValue placeholder="Select Currency" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Currencies</SelectItem>
-                <SelectItem value="naira">Naira (NGN)</SelectItem>
-                <SelectItem value="dollar">Dollar (USD)</SelectItem>
-                <SelectItem value="euro">Euro (EUR)</SelectItem>
-              </SelectContent>
-            </Select>
+              {/* Step 2: Select Currency */}
+              <Select
+                onValueChange={setSelectedCurrency}
+                value={selectedCurrency}
+              >
+                <SelectTrigger className="w-full md:w-[250px]">
+                  <SelectValue placeholder="Select Currency" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Currencies</SelectItem>
+                  <SelectItem value="naira">Naira (NGN)</SelectItem>
+                  <SelectItem value="dollar">Dollar (USD)</SelectItem>
+                  <SelectItem value="euro">Euro (EUR)</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 px-6 py-6 md:p-6 bg-white rounded-xl">
             {/* Filtered Investments */}
             <div className="mt-4">
               <h4 className="text-md font-medium">Filtered Results:</h4>
@@ -125,7 +73,7 @@ const InvestmentPage = () => {
                 filteredInvestments.map((investment) => (
                   <div
                     key={investment.id}
-                    className="grid sm:grid-cols-2 gap-5 justify-items-center items-center border rounded-2xl"
+                    className="grid sm:grid-cols-2 gap-5 bg-white shadow-sm justify-items-center items-center border rounded-2xl"
                   >
                     <Image
                       src={investment.image}
@@ -167,7 +115,15 @@ const InvestmentPage = () => {
                           {investment.slots} slots remaining
                         </p>
                       </div>
-                      <Button variant="secondary" className="w-fit px-6 mt-2">
+                      <Button
+                        variant="secondary"
+                        className="w-fit px-6 mt-2"
+                        onClick={() =>
+                          router.push(
+                            `/dashboard/investments/${investment.slug}`
+                          )
+                        }
+                      >
                         Read More
                       </Button>
                     </div>
