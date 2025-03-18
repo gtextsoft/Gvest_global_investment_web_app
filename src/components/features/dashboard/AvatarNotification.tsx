@@ -36,7 +36,7 @@ export function AvatarWithNotification() {
       <DropdownMenuContent className="w-58" align="end">
         <div className="px-2 py-2 text-sm font-medium">Notifications</div>
 
-        {notifications.length > 0 ? (
+        {notifications.length < 0 ? (
           notifications.map((notif) => (
             <DropdownMenuItem
               key={notif.id}
@@ -51,8 +51,8 @@ export function AvatarWithNotification() {
             </DropdownMenuItem>
           ))
         ) : (
-          <div className="p-1 text-center text-sm text-gray-500">
-            No new notifications
+          <div className="p-1 pb-2 text-center text-sm text-gray-500">
+           <p className="text-base"> No new notifications</p>
           </div>
         )}
       </DropdownMenuContent>

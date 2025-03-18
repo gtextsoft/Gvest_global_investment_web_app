@@ -1,9 +1,13 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
 import ErrorImg from "../../public/images/error-404.png";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 const NotFound = () => {
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -33,6 +37,12 @@ const NotFound = () => {
           >
             Go Back home
           </Link>
+          <Button
+            onClick={() => router.back()}
+            className={`w-fit border mt-8 h-fit md:min-w-fit rounded-sm !bg-lonestar-900 !text-white py-2 px-4 text-base font-normal`}
+          >
+            Go To Previous Page
+          </Button>
         </div>
       </section>
     </>
