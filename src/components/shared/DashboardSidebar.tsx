@@ -36,16 +36,16 @@ const menuItemsTop = [
     icon: ArrowLeftRight,
     href: "/dashboard/transactions",
   },
-  { name: "File management", icon: File, href: "/dashboard  b/filemanagement" },
-  { name: "Wallet", icon: Wallet, href: "/dashboard  b/wallet" },
-  { name: "Bank", icon: Landmark, href: "/dashboard  b/bank" },
-  { name: "Referrals", icon: Users, href: "/dashboard  b/referrals" },
+  { name: "File management", icon: File, href: "/dashboard/filemanagement" },
+  { name: "Wallet", icon: Wallet, href: "/dashboard/wallet" },
+  { name: "Bank", icon: Landmark, href: "/dashboard/bank" },
+  { name: "Referrals", icon: Users, href: "/dashboard/referrals" },
 ];
 
 const menuItemsBottom = [
-  { name: "Settings", icon: Settings, href: "/settings" },
-  { name: "Help Center", icon: Headset, href: "/contact" },
-  { name: "Logout", icon: LogOut, href: "/logout" },
+  { name: "Settings", icon: Settings, href: "/dashboard/settings" },
+  { name: "Help Center", icon: Headset, href: "/dashboard" },
+  { name: "Logout", icon: LogOut, href: "/dashboard" },
 ];
 
 const DashboardSidebar = () => {
