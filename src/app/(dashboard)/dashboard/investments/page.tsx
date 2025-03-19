@@ -91,7 +91,7 @@ const InvestmentPage = () => {
                           <span className="text-xl font-medium">
                             {investment.currencySign}
                           </span>
-                          <span className="text-lonestar-950 text-xl font-medium px-1">
+                          <span className="text-lonestar-950 text-xl w-full truncate font-medium px-1">
                             {investment.price.toLocaleString()}
                           </span>
                           /per unit
@@ -111,13 +111,13 @@ const InvestmentPage = () => {
                             {investment.type}
                           </li>
                         </ul>
-                        <p className="text-base italic text-end text-black-800 underline">
+                        <p className="text-base italic text-end text-blue-700 underline">
                           {investment.slots} slots remaining
                         </p>
                       </div>
                       <Button
                         variant="secondary"
-                        className="w-fit px-6 mt-2"
+                        className="w-fit px-6 mt-2 hover:bg-lonestar-950 hover:text-white"
                         onClick={() =>
                           router.push(
                             `/dashboard/investments/${investment.slug}`

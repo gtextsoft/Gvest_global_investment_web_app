@@ -35,7 +35,7 @@ const InvestmentRecord = () => {
           </Button>
         </div>
 
-        <div className="divide-y divide-gray-200 overflow-hidden pb-5 bg-white">
+        <div className="divide-y divide-gray-200 overflow-hidden bg-white rounded-b-lg">
           {investmentData.map((investment, index) => (
             <div
               key={index}
