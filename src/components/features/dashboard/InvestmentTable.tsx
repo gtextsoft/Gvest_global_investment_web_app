@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/table";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { investments } from "@/lib/constant";
 import { Button } from "@/components/ui/button";
 
 const myInvestments = [
@@ -70,8 +69,6 @@ const InvestmentTable = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const router = useRouter();
-
-  console.log("investments", investments);
 
   // Calculate total pages
   const totalPages = Math.ceil(myInvestments.length / ITEMS_PER_PAGE);

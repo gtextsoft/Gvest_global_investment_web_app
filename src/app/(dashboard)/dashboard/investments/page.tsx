@@ -32,7 +32,7 @@ const InvestmentPage = () => {
         <div className="flex flex-col gap-6 min-h-screen">
           <div className="flex flex-col gap-6 px-6 py-6 md:p-6 bg-white rounded-b-xl">
             <h2 className="font-medium text-xl">Smart Investment</h2>
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap sm:flex-nowrap gap-y-5 items-center gap-2">
               {/* Step 1: Select Investment Type */}
               <Select onValueChange={setSelectedType} value={selectedType}>
                 <SelectTrigger className="w-full md:w-[250px]">
@@ -87,7 +87,7 @@ const InvestmentPage = () => {
                         <h4 className="text-base sm:text-lg md:text-lg font-medium leading-normal">
                           {investment.name}
                         </h4>
-                        <p className="flow items-baseline gap-2 text-black-900 text-sm">
+                        <p className="flow items-baseline gap-2 text-black-900 text-sm break-normal">
                           <span className="text-xl font-medium">
                             {investment.currencySign}
                           </span>
