@@ -116,7 +116,7 @@ const TransactionTable = () => {
                   {investment.purpose}
                 </TableCell>
                 <TableCell>{investment.amount}</TableCell>
-                <TableCell>{investment.type}</TableCell>
+                <TableCell><span className={`px-4 py-2 border-[0.1px] rounded-full ${investment.type === "Credit" ? "bg-[#c0ffc0] text-green-950 border-green-950/50" : "text-yellow-950 bg-yellow-100 border-yellow-950/50"}`}>{investment.type}</span></TableCell>
                 <TableCell>{investment.date}</TableCell>
               </TableRow>
             ))
