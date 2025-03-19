@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import { investments } from "@/lib/constant";
 import { BriefcaseBusiness, ChartNoAxesCombined, Clock } from "lucide-react";
-import { Button } from "@/components/ui/button";
 
 const InvestmentId = () => {
   const params = useParams();
@@ -27,19 +26,24 @@ const InvestmentId = () => {
                   className="w-96"
                 />
                 <div className="flex flex-col gap-3 mt-4 w-full">
-                  <div className="flex flex-col gap-1">
-                    <h3 className="text-lg font-semibold">
-                      {filterData[0].name}
-                    </h3>
-                    <p className="flow items-baseline gap-2 text-black-900 text-sm">
-                      <span className="text-xl font-medium">
-                        {filterData[0].currencySign}
+                  <div className="flex justify-between items-center gap-1 md:pr-4">
+                    <div className="flex flex-col gap-1">
+                      <h3 className="text-lg font-semibold">
+                        {filterData[0].name}
+                      </h3>
+                      <p className="flow flex-col md:flex-row items-baseline gap-2 text-black-900 text-sm">
+                        <span className="text-xl font-medium">
+                          {filterData[0].currencySign}
+                        </span>
+                        <span className="text-lonestar-950 text-xl font-medium px-1">
+                          {filterData[0].price.toLocaleString()}
+                        </span>
+                        /per unit
+                      </p>
+                    </div>
+                      <span className="font-normal text-sm rounded-2xl bg-[#c0ffc0] px-3 py-2 w-fit h-fit text-green-950">
+                        Maturity
                       </span>
-                      <span className="text-lonestar-950 text-xl font-medium px-1">
-                        {filterData[0].price.toLocaleString()}
-                      </span>
-                      /per unit
-                    </p>
                   </div>
                   <p className="font-normal text-black-900 text-base my-2">
                     {filterData[0].paragraph}
@@ -59,13 +63,7 @@ const InvestmentId = () => {
                         {filterData[0].type}
                       </li>
                     </ul>
-                    <p className="text-lg mt-5 italic text-blue-700 underline">
-                      {filterData[0].slots} slots remaining
-                    </p>
                   </div>
-                  <Button variant="default" className="px-10 w-fit mt-5">
-                    invest now
-                  </Button>
                 </div>
               </div>
             ) : (

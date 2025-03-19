@@ -1,5 +1,5 @@
 import React from "react";
-import InvestmentTablet from "@/components/features/dashboard/InvestmentTablet";
+import InvestmentTable from "@/components/features/dashboard/InvestmentTable";
 
 const MyInvestments = () => {
   return (
@@ -8,7 +8,7 @@ const MyInvestments = () => {
         <div className="flex flex-col gap-6 px-6 py-6 md:p-6 bg-white rounded-b-xl min-h-screen">
           <h2 className="font-medium text-xl">My Investments</h2>
           <div className="flex">
-            <InvestmentTablet />
+            <InvestmentTable />
           </div>
         </div>
       </div>

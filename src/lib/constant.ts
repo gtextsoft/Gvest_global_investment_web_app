@@ -68,3 +68,70 @@ export const investments = [
       "In this investment scheme, with an initial deposit of 5 million naira and a competitive annual interest rate of 16%, calculated in naira, your ROI is distributed yearly. This means you will receive 800,000 naira annually as your return on investment (ROI). Over the course of 3 years, your total ROI will amount to 2,400,000 naira.",
   },
 ];
+
+
+export const transactions = [
+  {
+    purpose: "Saving Deposit",
+    amount: "NGN 100",
+    type: "Debit",
+    date: "08 February, 2024",
+    reference: "GVETRBSFHIKAY3D",
+  },
+  {
+    purpose: "Saving Deposit",
+    amount: "NGN 300,000",
+    type: "Debit",
+    date: "31 January, 2024",
+    reference: "GVETRLMH12R2XVR",
+  },
+  {
+    purpose: "Fund Wallet",
+    amount: "NGN 300,000",
+    type: "Credit",
+    date: "31 January, 2024",
+    reference: "GVETRHCA7TTG25A",
+  },
+  {
+    purpose: "Fund Wallet",
+    amount: "NGN 1,000",
+    type: "Credit",
+    date: "24 January, 2024",
+    reference: "ChargedFromAndr",
+  },
+  {
+    purpose: "Fund Wallet",
+    amount: "NGN 1,000",
+    type: "Credit",
+    date: "24 January, 2024",
+    reference: "GVETRT3NK3C9I11",
+  },
+  {
+    purpose: "Fund Wallet",
+    amount: "NGN 5,000,000",
+    type: "Credit",
+    date: "29 September, 2023",
+    reference: "GVETRFI3YZRJBLX",
+  },
+  {
+    purpose: "Investment Deposit",
+    amount: "NGN 5,000,000",
+    type: "Debit",
+    date: "28 September, 2023",
+    reference: "GVETRF6I2RMXZM0",
+  },
+  {
+    purpose: "Investment Deposit",
+    amount: "NGN 10,000,000",
+    type: "Debit",
+    date: "01 September, 2023",
+    reference: "GVETR9KEE0LZKF2",
+  },
+  {
+    purpose: "Investment Deposit",
+    amount: "NGN 1,000,000",
+    type: "Debit",
+    date: "29 August, 2023",
+    reference: "GVETR6RQIV67DUN",
+  },
+];
