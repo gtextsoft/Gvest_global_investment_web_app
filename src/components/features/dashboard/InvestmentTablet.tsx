@@ -10,6 +10,7 @@ import {
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { investments } from "@/lib/constant";
+import { Button } from "@/components/ui/button";
 
 const myInvestments = [
   {
@@ -148,34 +149,34 @@ const InvestmentTable = () => {
       {/* Pagination Controls */}
       {myInvestments.length > ITEMS_PER_PAGE && (
         <div className="flex justify-between items-center mt-4">
-          <button
+          <Button
             onClick={prevPage}
             disabled={currentPage === 0}
             className={`px-4 py-2 text-sm font-medium rounded-md ${
               currentPage === 0
                 ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                : "bg-blue-500 text-white"
+                : ""
             }`}
           >
             Previous
-          </button>
+          </Button>
 
           {/* Page Indicator */}
           <span className="text-sm font-medium text-gray-700">
             Page {currentPage + 1} of {totalPages}
           </span>
 
-          <button
+          <Button
             onClick={nextPage}
             disabled={currentPage + 1 >= totalPages}
             className={`px-4 py-2 text-sm font-medium rounded-md ${
               currentPage + 1 >= totalPages
                 ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                : "bg-blue-500 text-white"
+                : ""
             }`}
           >
             Next
-          </button>
+          </Button>
         </div>
       )}
     </div>
