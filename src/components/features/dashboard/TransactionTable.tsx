@@ -7,9 +7,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { investments, transactions } from "@/lib/constant";
+import { transactions } from "@/lib/constant";
 import { Button } from "@/components/ui/button";
 
 const myInvestments = [
@@ -69,8 +68,6 @@ const ITEMS_PER_PAGE = 5;
 const TransactionTable = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
-  const router = useRouter();
-
   // Calculate total pages
   const totalPages = Math.ceil(transactions.length / ITEMS_PER_PAGE);
 
@@ -113,9 +110,6 @@ const TransactionTable = () => {
               <TableRow
                 key={index}
                 className="cursor-pointer"
-                onClick={() =>
-                  router.push(`/dashboard/myinvestments/${investment.slug}`)
-                }
               >
                 <TableCell>{investment.reference}</TableCell>
                 <TableCell className="font-medium py-5">
