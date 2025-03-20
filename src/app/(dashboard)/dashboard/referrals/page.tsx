@@ -31,11 +31,11 @@ const Referrals = () => {
 
             {/* Referral Status */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="flex flex-col gap-2 p-5 border rounded shadow-md bg-green-100 text-white">
+              <div className="flex flex-col gap-2 p-5 border rounded-md shadow-md bg-[linear-gradient(170deg,#000,#03045E)] text-white">
                 <p className="font-medium">Approved</p>
                 <p className="text-lg font-semibold">1 Referral</p>
               </div>
-              <div className="flex flex-col gap-2 p-5 border rounded shadow-md bg-yellow-100 text-yellow-950">
+              <div className="flex flex-col gap-2 p-5 border rounded-md shadow-md bg-[linear-gradient(170deg,#000,#8D731D)] text-white">
                 <p className="font-medium">Pending</p>
                 <p className="text-lg font-semibold">0 Referral</p>
               </div>
