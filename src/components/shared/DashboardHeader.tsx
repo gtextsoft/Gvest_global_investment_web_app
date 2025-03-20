@@ -9,7 +9,7 @@ const pageTitles: Record<string, string> = {
   investments: "Investment",
   myinvestments: "My Investments",
   transactions: "Transactions",
-  filemanagement: "File Management",
+  documents: "Documents",
   wallet: "Wallet",
   bank: "Bank",
   referrals: "Referrals",

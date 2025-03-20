@@ -36,7 +36,7 @@ const menuItemsTop = [
     icon: ArrowLeftRight,
     href: "/dashboard/transactions",
   },
-  { name: "File management", icon: File, href: "/dashboard/filemanagement" },
+  { name: "Documents", icon: File, href: "/dashboard/documents" },
   { name: "Wallet", icon: Wallet, href: "/dashboard/wallet" },
   { name: "Bank", icon: Landmark, href: "/dashboard/bank" },
   { name: "Referrals", icon: Users, href: "/dashboard/referrals" },
