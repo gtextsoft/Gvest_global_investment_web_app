@@ -95,10 +95,10 @@ const TransactionTable = () => {
       <Table>
         <TableHeader className="bg-lonestar-50 border border-gray-300">
           <TableRow>
-            <TableHead className="text-lonestar-900 py-4">
-             Reference
+            <TableHead className="text-lonestar-900 py-4">Reference</TableHead>
+            <TableHead className="text-lonestar-900">
+              Transaction Purpose
             </TableHead>
-            <TableHead className="text-lonestar-900">Transaction Purpose</TableHead>
             <TableHead className="text-lonestar-900 py-4">Amount</TableHead>
             <TableHead className="text-lonestar-900 py-4">Type</TableHead>
             <TableHead className="text-lonestar-900 py-4">Date</TableHead>
@@ -107,16 +107,23 @@ const TransactionTable = () => {
         <TableBody>
           {paginatedInvestments.length > 0 ? (
             paginatedInvestments.map((investment, index) => (
-              <TableRow
-                key={index}
-                className="cursor-pointer"
-              >
+              <TableRow key={index} className="cursor-pointer">
                 <TableCell>{investment.reference}</TableCell>
                 <TableCell className="font-medium py-5">
                   {investment.purpose}
                 </TableCell>
                 <TableCell>{investment.amount}</TableCell>
-                <TableCell><span className={`px-4 py-2 border-[0.1px] rounded-full ${investment.type === "Credit" ? "bg-[#c0ffc0] text-green-950 border-green-950/50" : "text-yellow-950 bg-yellow-100 border-yellow-950/50"}`}>{investment.type}</span></TableCell>
+                <TableCell>
+                  <span
+                    className={`px-4 py-2 border-[0.1px] rounded-full ${
+                      investment.type === "Credit"
+                        ? "bg-[#c0ffc0] text-green-950 border-green-950/50"
+                        : "text-yellow-950 bg-yellow-100 border-yellow-950/50"
+                    }`}
+                  >
+                    {investment.type}
+                  </span>
+                </TableCell>
                 <TableCell>{investment.date}</TableCell>
               </TableRow>
             ))
