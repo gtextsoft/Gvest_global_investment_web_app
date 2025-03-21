@@ -46,10 +46,10 @@ const EditPage = () => {
           </div>
 
           {/* Add Information Button */}
-          <Button className="mt-4 w-full !py-4 h-fit">ADD INFORMATION</Button>
+        <div className="grid items-center gap-5 w-full">
+          <Button className="mt-4 w-full !py-4 h-fit bg-lonestar-950 hover:bg-lonestar-900">ADD</Button>
+          <Button variant="secondary" onClick={() => router.push("/dashboard/bank")} className="w-full !px-4 !py-3 h-fit hover:bg-lonestar-950 hover:text-white"> <ArrowLeft className="size-6"/> Back</Button>
         </div>
-        <div className="flex items-end justify-end py-5">
-          <Button variant="secondary" onClick={() => router.push("/dashboard/bank")} className="mt-4 w-fit !px-4 !py-3 h-fit hover:bg-lonestar-950 hover:text-white"> <ArrowLeft className="size-6"/> Back</Button>
         </div>
       </div>
     </section>
