@@ -30,7 +30,7 @@ export function AvatarDropdown() {
           My Account
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => router.push("/dashboard/settings/profile")}>
+        <DropdownMenuItem onClick={() => router.push("/dashboard/settings")}>
           <User className="w-4 h-4 mr-2" />
           Profile
         </DropdownMenuItem>
