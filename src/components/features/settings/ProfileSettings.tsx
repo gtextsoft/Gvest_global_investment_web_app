@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import Image from "next/image";
 import joe from "../../../../public/images/joe.webp";
 import { Edit3 } from "lucide-react";
@@ -11,46 +9,44 @@ interface ProfileField {
 }
 interface ProfileSettingsProps {
   fields: ProfileField[];
-  isEditing: boolean;
   onToggleEdit: () => void;
 }
 export const ProfileSettings: React.FC<ProfileSettingsProps> = ({
   fields,
-  isEditing,
   onToggleEdit,
 }) => {
   return (
-    <div className="grid gap-10 mt-4">
-      <div className="flex items-center justify-between md:pr-5">
-        <div className="flex items-center gap-2">
+    <div className="grid gap-10">
+      <div className="flex flex-wrap gap-6 items-start md:items-center justify-between md:pr-5">
+        <div className="flex flex-col sm:flex-row flex-wrap md:items-center gap-2 text-base">
           <Image
             src={joe}
             alt="avatar"
             className="size-40 border rounded-full"
           />
-          <div className="flex flex-col px-2.5 gap-1">
+          <div className="grid md:px-2.5">
             <h4 className="text-xl font-medium text-black-950">Wade Warren</h4>
-            <p className="text-base text-black-800">
+            <p className="text-base truncate text-black-800">
               wadewarrengmail@gmail.com
             </p>
           </div>
         </div>
-        <Button className="w-fit">
+        <Button className="w-fit !px-5" onClick={onToggleEdit}>
           Edit
           <Edit3 />
         </Button>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 gap-y-7">
-        {fields.map(({ label, value }) => (
-          <div key={label} className="flex flex-col gap-2">
-            <Label>{label}</Label>
-            <Input value={value} readOnly={!isEditing} />
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-10">
+        {fields.map((field) => (
+          <div
+            key={field.label}
+            className="flex flex-wrap flex-col w-full gap-1"
+          >
+            <span className="font-normal text-black-800 w-full">{field.label} : </span>
+            <span className="text-black-950 font-medium truncate w-full">{field.value}</span>
           </div>
         ))}
       </div>
-      <Button className="mt-4 text-base py-6" onClick={onToggleEdit}>
-        {isEditing ? "Save" : "Edit"}
-      </Button>
     </div>
   );
 };

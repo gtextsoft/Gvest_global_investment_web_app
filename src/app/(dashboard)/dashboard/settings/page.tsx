@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { PasswordSettings } from "@/components/features/settings/PasswordSettings";
 import { ProfileSettings } from "@/components/features/settings/ProfileSettings";
+import EditProfile from "@/components/features/settings/EditProfile";
 
 const profileFields = [
   { label: "Name", value: "Wade Warren" },
@@ -23,13 +24,13 @@ const Settings: React.FC = () => {
   return (
     <section className="flex flex-col w-full gap-2">
       <div className="flex flex-col gap-10 px-5">
-        <div className="px-6 py-5 md:p-6 md:pb-8 bg-white rounded-xl shadow-md my-10">
+        <div className="flex flex-col gap-5 sm:px-6 py-5 pb-8 md:p-6 md:pb-14 bg-white rounded-xl shadow-md my-10">
           {/* Tab Switch */}
-          <div className="flex w-fit my-4 px-5">
+          <div className="flex w-full md:w-fit my-4 px-4 sm:px-5">
             {["profile", "password"].map((tab) => (
               <button
                 key={tab}
-                className={`flex-1 w-fit px-8 py-3 text-center transition-all ${
+                className={`flex-1 w-full sm:w-fit md:px-8 py-3 text-center text-sm sm:text-base transition-all ${
                   activeTab === tab
                     ? "bg-lonestar-950 text-white"
                     : "bg-lonestar-100 text-lonestar-950"
@@ -41,19 +42,24 @@ const Settings: React.FC = () => {
             ))}
           </div>
           <div className="flex flex-col px-5">
-
-          {/* Tab Content */}
-          {activeTab === "profile" ? (
-            <ProfileSettings
-              fields={profileFields}
-              isEditing={isEditing}
-              onToggleEdit={() => setIsEditing((prev) => !prev)}
-            />
-          ) : (
-            <PasswordSettings />
-          )}
+            {/* Tab Content */}
+            {activeTab === "profile" ? (
+              isEditing ? (
+                <EditProfile
+                  fields={profileFields}
+                  isEditing={isEditing}
+                  onSave={() => setIsEditing(false)} // Switch back to ProfileSettings
+                />
+              ) : (
+                <ProfileSettings
+                  fields={profileFields}
+                  onToggleEdit={() => setIsEditing(true)}
+                />
+              )
+            ) : (
+              <PasswordSettings />
+            )}
           </div>
-
         </div>
       </div>
     </section>
