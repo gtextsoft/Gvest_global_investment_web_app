@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button"; // Ensure you have a button component
 import Image from "next/image";
-import { Edit3 } from "lucide-react";
 import joe from "../../../../public/images/joe.webp";
 
 interface Field {
