@@ -19,11 +19,10 @@ import {
   Landmark,
   Headset,
   LayoutGrid,
-  ShieldCheck, // Example admin icon
-  UserCog,
+  ShieldCheck,
   Briefcase,
   UsersRound,
-  UserCog2Icon, // Example admin settings icon
+  UserCog2Icon,
 } from "lucide-react";
 
 import gVestLogo from "../../../public/icons/gVestLogo.svg";
