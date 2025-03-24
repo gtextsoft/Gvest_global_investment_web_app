@@ -23,13 +23,15 @@ export default function DashboardHeader() {
 
   // Extract the last part of the pathname (after "/dashboard/")
   const pathSegments = pathname.split("/").filter(Boolean); // Removes empty segments
-  let currentPage = "Dashboard"; // Default title
+  let currentPage = pathname.startsWith("/admin") ? "Admin" : "Dashboard"; // Default overview based on role
 
   if (pathSegments.length > 1) {
-    const key = pathSegments[1].toLowerCase().replace(/-/g, ""); // Normalize key
-    currentPage = pageTitles[key] || "Dashboard"; // Use mapped title or default
+    const key = pathSegments[pathSegments.length - 1]
+      .toLowerCase()
+      .replace(/-/g, ""); // Normalize key
+    currentPage = pageTitles[key] || currentPage; // Use mapped title or default based on role
   }
-  
+
   return (
     <header className="bg-white shadow-sm border-b p-4 flex justify-between items-center">
       <div className="container justify-between px-3 flex w-full mx-auto">

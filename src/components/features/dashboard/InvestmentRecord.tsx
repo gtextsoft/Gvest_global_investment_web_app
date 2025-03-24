@@ -1,7 +1,10 @@
+"use client";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const InvestmentRecord = () => {
+  const router = useRouter();
   const investmentData = [
     {
       name: "Fractional Ownership Naira Scheme",
@@ -30,7 +33,11 @@ const InvestmentRecord = () => {
       <div className="grid gap-0 w-full">
         <div className="flex justify-between items-center border-b shadow-lg w-full  p-6 py-5 bg-white rounded-t-lg">
           <h2 className="text-base md:text-xl font-medium">My Investments</h2>
-          <Button variant="link" className="py-0 px-0 md:px-4 text-xs md:base">
+          <Button
+            variant="link"
+            className="py-0 px-0 md:px-4 text-xs md:text-sm"
+            onClick={() => router.push("/dashboard/investments")}
+          >
             View More
           </Button>
         </div>

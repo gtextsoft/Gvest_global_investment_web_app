@@ -1,7 +1,10 @@
+"use client";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const TransactionRecords = () => {
+  const router = useRouter();
   const transactionsData = [
     {
       name: "Fractional Ownership Naira Scheme",
@@ -30,7 +33,13 @@ const TransactionRecords = () => {
       <div className="grid gap-0 w-full">
         <div className="flex items-center justify-between border-b shadow-lg w-full p-6 py-5 bg-white rounded-t-lg">
           <h2 className="text-base md:text-xl font-medium">My Transactions</h2>
-          <Button variant="link" className="text-xs sm:base px-0 sm:px-4">View More</Button>
+          <Button
+            variant="link"
+            className="text-xs sm:text-sm px-0 sm:px-4"
+            onClick={() => router.push("/dashboard/transactions")}
+          >
+            View More
+          </Button>
         </div>
 
         <div className="divide-y divide-gray-200 overflow-hidden pb-5 bg-white">
@@ -67,9 +76,9 @@ const TransactionRecords = () => {
                       <p className="text-[#34C759] text-sm sm:text-lg md:text-xl truncate w-full">
                         {investment.todayAmount}
                       </p>
-                    <span className="inline-block text-gray-800 text-xs">
-                      Today
-                    </span>
+                      <span className="inline-block text-gray-800 text-xs">
+                        Today
+                      </span>
                     </div>
                   </div>
                 </div>
