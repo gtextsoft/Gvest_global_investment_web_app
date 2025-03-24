@@ -53,7 +53,7 @@ const userMenuBottom = [
 
 const adminMenuTop = [
   { name: "Admin Dashboard", icon: ShieldCheck, href: "/admin" },
-  { name: "User Management", icon: Users, href: "/admin/investors" },
+  { name: "User Management", icon: Users, href: "/admin/users" },
   {
     name: "Investments",
     icon: ChartNoAxesCombined,
@@ -69,7 +69,7 @@ const adminMenuBottom = [
   { name: "Logout", icon: LogOut, href: "/logout" },
 ];
 
-const DashboardSidebar = () => {
+const AdminDashboardSidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const currentRoute = usePathname();
 
@@ -155,4 +155,4 @@ const DashboardSidebar = () => {
   );
 };
 
-export default DashboardSidebar;
+export default AdminDashboardSidebar;
