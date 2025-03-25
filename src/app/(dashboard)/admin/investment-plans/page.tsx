@@ -23,8 +23,10 @@ import poundScheme from "../../../../../public/images/investmentplans/poundSchem
 import Modal from "@/components/features/modal/Modal";
 import { X } from "lucide-react";
 
-const investments = Array(7).fill({
-  id: "GVEIPMCRN420AC5",
+const images = [dollarscheme, nairascheme, poundScheme]; // Array of images
+
+const investments = Array(7).fill(null).map((_, index) => ({
+  id: `INVESTMENT-${index + 1}`,
   title: "Jasper Estate Richmond TX",
   amount: "$2,500",
   paymentMethod: "Credit Card",
@@ -35,8 +37,8 @@ const investments = Array(7).fill({
   nextRoiDate: "2024-09-30",
   investedDate: "2023-06-15",
   users: "Yes",
-  img: poundScheme,
-});
+  img: images[index % images.length], // Rotate images
+}));
 
 const tableHeaders = [
   "Investment ID",
