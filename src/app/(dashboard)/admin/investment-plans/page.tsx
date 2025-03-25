@@ -16,29 +16,42 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import dollarscheme from "../../../../../public/images/investmentplans/dollarscheme.png";
 import nairascheme from "../../../../../public/images/investmentplans/nairascheme.png";
 import poundScheme from "../../../../../public/images/investmentplans/poundScheme.png";
 import Modal from "@/components/features/modal/Modal";
 import { X } from "lucide-react";
 
-const images = [dollarscheme, nairascheme, poundScheme]; // Array of images
+const images = [dollarscheme, nairascheme, poundScheme];
 
-const investments = Array(7).fill(null).map((_, index) => ({
-  id: `INVESTMENT-${index + 1}`,
-  title: "Jasper Estate Richmond TX",
-  amount: "$2,500",
-  paymentMethod: "Credit Card",
-  roi: "20%",
-  status: "Completed",
-  years: 3,
-  type: "Buy Land",
-  nextRoiDate: "2024-09-30",
-  investedDate: "2023-06-15",
-  users: "Yes",
-  img: images[index % images.length], // Rotate images
-}));
+interface Investment {
+  id: string;
+  title: string;
+  amount: string;
+  roi: string;
+  years: number;
+  type: string;
+  nextRoiDate: string;
+  investedDate: string;
+  users: string;
+  img: StaticImageData;
+}
+
+const investments: Investment[] = Array(7)
+  .fill(null)
+  .map((_, index) => ({
+    id: `INVESTMENT-${index + 1}`,
+    title: "Jasper Estate Richmond TX",
+    amount: "$2,500",
+    roi: "20%",
+    years: 3,
+    type: index % 2 === 0 ? "Buy Land" : "Sell Property",
+    nextRoiDate: "2024-09-30",
+    investedDate: "2023-06-15",
+    users: "Yes",
+    img: images[index % images.length],
+  }));
 
 const tableHeaders = [
   "Investment ID",
@@ -51,12 +64,16 @@ const tableHeaders = [
 ];
 
 const InvestmentPlans = () => {
-  const [filterType, setFilterType] = useState("All");
-  const [selectedInvestment, setSelectedInvestment] = useState(null);
+  const [filterType, setFilterType] = useState<string>("All");
+  const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Handle row click
-  const handleRowClick = (investment: any) => {
+  // Filtered investments based on type
+  const filteredInvestments = filterType === "All"
+    ? investments
+    : investments.filter((inv) => inv.type === filterType);
+
+  const handleRowClick = (investment: Investment) => {
     setSelectedInvestment(investment);
     setIsModalOpen(true);
   };
@@ -68,7 +85,7 @@ const InvestmentPlans = () => {
         <Button variant="secondary">Add New Investment Plan</Button>
         <div className="flex items-center gap-4">
           <p>Filter:</p>
-          <Select onValueChange={setFilterType}>
+          <Select onValueChange={(value) => setFilterType(value)} value={filterType}>
             <SelectTrigger className="w-full md:w-[250px]">
               <SelectValue placeholder="Select Investment Type" />
             </SelectTrigger>
@@ -92,28 +109,16 @@ const InvestmentPlans = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {investments.map((investment, index) => (
+          {filteredInvestments.map((investment) => (
             <TableRow
-              key={investment.id + index}
+              key={investment.id}
               className="hover:bg-gray-50 cursor-pointer"
-              onClick={(e) => {
-                e.stopPropagation(); // Prevent row click event
-                handleRowClick(investment);
-              }}
+              onClick={() => handleRowClick(investment)}
             >
-              <TableCell className="max-w-[150px] whitespace-nowrap overflow-hidden text-ellipsis">
+              <TableCell>{investment.id}</TableCell>
+              <TableCell>
                 <div className="flex items-center">
-                  <p className="truncate">{investment.id}qwqwwqwqwqwqw</p>
-                </div>
-              </TableCell>
-              <TableCell className="">
-                <div className="flex items-center">
-                  <Image
-                    src={investment.img}
-                    alt={investment.title}
-                    width={60}
-                    height={60}
-                  />
+                  <Image src={investment.img} alt={investment.title} width={60} height={60} />
                   <p className="truncate">{investment.title}</p>
                 </div>
               </TableCell>
@@ -126,7 +131,7 @@ const InvestmentPlans = () => {
                   variant="outline"
                   size="sm"
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent row click event
+                    e.stopPropagation();
                     handleRowClick(investment);
                   }}
                 >
@@ -138,110 +143,66 @@ const InvestmentPlans = () => {
         </TableBody>
       </Table>
 
-      {/* Modal Component */}
       {isModalOpen && selectedInvestment && (
-        <Modal
-          title="Investment Plan Details"
-          description="Detailed information about this investment."
-          onClose={() => setIsModalOpen(false)} // Close modal
-        >
+        <Modal title="Investment Plan Details" onClose={() => setIsModalOpen(false)}>
           <div className="flex flex-col gap-4 w-full">
             <div className="flex items-center w-full">
               <Image
                 src={selectedInvestment.img}
                 alt={selectedInvestment.title}
-                width={30}
-                height={30}
+                width={60}
+                height={60}
                 className="size-20 md:size-40"
               />
-              <div className="flex flex-col gap-2 w-full">
-                <div className="flex items-center gap-10 justify-between w-full">
-                  <p className="text-sm text-black-900 text-nowrap min-w-20">
-                    Investment ID
-                  </p>
-                  <p className="text-sm text-black-950">GVEIPMCRN420AC5</p>
-                </div>
-                <div className="flex items-center gap-10 justify-between w-full">
-                  <p className="text-sm text-black-900 text-nowrap min-w-20">
-                    Title:
-                  </p>
-                  <p className="text-sm text-black-950">
-                    Jasper Estate Richmond T
-                  </p>
-                </div>
+              <div className="ml-4">
+                <p className="text-lg font-semibold">{selectedInvestment.title}</p>
+                <p className="text-gray-700">Investment ID: {selectedInvestment.id}</p>
               </div>
             </div>
-            <div className="flex flex-col">
-              <h3 className="text-xl font-normal border-b border-black-800 pb-2">Investment Overview</h3>
-            </div>
 
-            <div className="grid gap-4">
-              {/* Investment Details */}
-              <div className="grid gap-2">
-                <div className="flex justify-between">
-                  <p className="font-normal text-black-900">Investment ID:</p>
-                  <p className="text-base text-black-950">{selectedInvestment.id}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-normal text-black-900">Title:</p>
-                  <p className="text-base text-black-950">{selectedInvestment.title}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-normal text-black-900">Amount:</p>
-                  <p className="text-base text-black-950">{selectedInvestment.amount}</p>
-                </div>
+            <h3 className="text-xl font-semibold border-b pb-2">Investment Overview</h3>
+            <div className="grid gap-2">
+              <div className="flex justify-between">
+                <p className="font-normal">Amount:</p>
+                <p className="text-base">{selectedInvestment.amount}</p>
               </div>
-
-              {/* Recent Transaction Detail */}
-              <h3 className="text-lg font-normal border-b border-black-600 pb-2">
-                Recent Transaction Detail
-              </h3>
-              <div className="grid gap-2">
-                <div className="flex justify-between">
-                  <p className="font-normal text-black-900">ROI:</p>
-                  <p className="text-base text-black-950">{selectedInvestment.roi}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-normal text-black-900">No of Years:</p>
-                  <p className="text-base text-black-950">{selectedInvestment.years}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="font-normal text-black-900">Description:</p>
-                  <p className="text-base text-black-950">Fund added to wallet</p>
-                </div>
+              <div className="flex justify-between">
+                <p className="font-normal">ROI:</p>
+                <p className="text-base">{selectedInvestment.roi}</p>
               </div>
-
-              {/* Additional Information */}
-              <h3 className="text-lg font-normal border-b border-black-600 pb-2">Additional Details</h3>
-              <div className="grid gap-2">
-                <div className="flex justify-between">
-                  <p className="text-base font-normal text-black-900">Investment Type:</p>
-                  <p className="text-base font-normal text-black-950">{selectedInvestment.type}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="text-base font-normal text-black-900">Transaction Status:</p>
-                  <p className="text-base font-normal text-black-950">{selectedInvestment.status}</p>
-                </div>
-                <div className="flex justify-between">
-                  <p className="text-base font-normal text-black-900">Priority Level:</p>
-                  <p className="text-base font-normal text-black-950">Medium</p>
-                </div>
+              <div className="flex justify-between">
+                <p className="font-normal">No of Years:</p>
+                <p className="text-base">{selectedInvestment.years}</p>
+              </div>
+              <div className="flex justify-between">
+                <p className="font-normal">Investment Type:</p>
+                <p className="text-base">{selectedInvestment.type}</p>
               </div>
             </div>
-          {/* Close Button */}
-          <div className="flex justify-end mt-10">
-            <Button
-              variant="default"
-              size="lg"
-              className="py-2 px-4 text-lg font-medium"
-              onClick={() => setIsModalOpen(false)}
-            >
-              <X className="size-5"/>
-              Close
-            </Button>
+
+            <h3 className="text-lg font-semibold border-b pb-2">Transaction Details</h3>
+            <div className="grid gap-2">
+              <div className="flex justify-between">
+                <p className="font-normal">Next ROI Date:</p>
+                <p className="text-base">{selectedInvestment.nextRoiDate}</p>
+              </div>
+              <div className="flex justify-between">
+                <p className="font-normal">Invested Date:</p>
+                <p className="text-base">{selectedInvestment.investedDate}</p>
+              </div>
+              <div className="flex justify-between">
+                <p className="font-normal">Users:</p>
+                <p className="text-base">{selectedInvestment.users}</p>
+              </div>
+            </div>
+
+            <div className="flex justify-end mt-6">
+              <Button variant="default" size="lg" onClick={() => setIsModalOpen(false)}>
+                <X className="size-5" />
+                Close
+              </Button>
+            </div>
           </div>
-          </div>
-
         </Modal>
       )}
     </section>
