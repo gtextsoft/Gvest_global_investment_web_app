@@ -9,11 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useRouter } from "next/navigation";
 
 const InvestorsTable = () => {
   const [currentPage, setCurrentPage] = useState(0);
-  const router = useRouter();
   // Investors Data
   const investorsList = [
     {
