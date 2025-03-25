@@ -20,9 +20,9 @@ import {
   Headset,
   LayoutGrid,
   ShieldCheck,
-  Briefcase,
   UsersRound,
   UserCog2Icon,
+  BriefcaseBusiness,
 } from "lucide-react";
 
 import gVestLogo from "../../../public/icons/gVestLogo.svg";
@@ -56,7 +56,7 @@ const userMenuBottom = [
 const adminMenuTop = [
   { name: "Admin Dashboard", icon: ShieldCheck, href: "/admin" },
   { name: "User Management", icon: UsersRound, href: "/admin/investors" },
-  { name: "Investment Plans", icon: Briefcase, href: "/admin/investment-plans" },
+  { name: "Investment Plans", icon: BriefcaseBusiness, href: "/admin/investment-plans" },
   { name: "All Investments", icon: ChartNoAxesCombined, href: "/admin/investments" },
   { name: "Transactions", icon: ArrowLeftRight, href: "/admin/transactions" },
   { name: "Wallets", icon: Wallet, href: "/admin/wallets" },
@@ -65,7 +65,7 @@ const adminMenuTop = [
 
 const adminMenuBottom = [
   { name: "Settings", icon: UserCog2Icon, href: "/admin/settings" },
-  { name: "Help Center", icon: Headset, href: "/admin/help" },
+  // { name: "Help Center", icon: Headset, href: "/admin/help" },
   { name: "Logout", icon: LogOut, href: "/logout" },
 ];
 

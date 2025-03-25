@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const InvestmentRecord = () => {
+const OverviewInvestmentRecord = () => {
   const router = useRouter();
   const investmentData = [
     {
@@ -92,4 +92,4 @@ const InvestmentRecord = () => {
   );
 };
 
-export default InvestmentRecord;
+export default OverviewInvestmentRecord;

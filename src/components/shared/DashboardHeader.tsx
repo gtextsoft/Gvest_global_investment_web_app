@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AvatarDropdown } from "../features/dashboard/AvatarDropdown";
 import { AvatarWithNotification } from "../features/dashboard/AvatarNotification";
@@ -16,26 +17,33 @@ const pageTitles: Record<string, string> = {
   settings: "Settings",
   "help-center": "Help Center",
   logout: "Logout",
+  users: "Users",
+  investors: "Investors",
+  "investment-plans": "Investment Plans",
 };
 
 export default function DashboardHeader() {
   const pathname = usePathname();
+  const pathSegments = pathname.split("/").filter(Boolean);
 
-  // Extract the last part of the pathname (after "/dashboard/")
-  const pathSegments = pathname.split("/").filter(Boolean); // Removes empty segments
-  let currentPage = pathname.startsWith("/admin") ? "Admin" : "Dashboard"; // Default overview based on role
+  // Extract role dynamically (assumes first segment is the role)
+  const role = pathSegments[0] || "dashboard";
+  const roleHref = `/${role}`;
+  const subPath = pathSegments[1] ? pageTitles[pathSegments[1]] || pathSegments[1] : null;
 
-  if (pathSegments.length > 1) {
-    const key = pathSegments[pathSegments.length - 1]
-      .toLowerCase()
-      .replace(/-/g, ""); // Normalize key
-    currentPage = pageTitles[key] || currentPage; // Use mapped title or default based on role
-  }
+  const breadcrumb = (
+    <div className="flex items-center gap-2">
+      <Link href={roleHref} className="text-lonestar-950 hover:underline capitalize">
+        {role}
+      </Link>
+      {subPath && <span className="text-gray-500 capitalize">/ {subPath}</span>}
+    </div>
+  );
 
   return (
     <header className="bg-white shadow-sm border-b p-4 flex justify-between items-center">
-      <div className="container justify-between px-3 flex w-full mx-auto">
-        <h1 className="text-lg font-semibold">{currentPage}</h1>
+      <div className="container flex justify-between px-3 w-full mx-auto">
+        <h1 className="text-lg font-semibold">{breadcrumb}</h1>
 
         <div className="flex items-center gap-1">
           <AvatarWithNotification />

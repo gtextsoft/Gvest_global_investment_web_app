@@ -65,7 +65,7 @@ const myInvestments = [
 // Items per page
 const ITEMS_PER_PAGE = 5;
 
-const InvestmentTable = () => {
+const OverviewInvestmentTable = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const router = useRouter();
@@ -180,4 +180,4 @@ const InvestmentTable = () => {
   );
 };
 
-export default InvestmentTable;
+export default OverviewInvestmentTable;

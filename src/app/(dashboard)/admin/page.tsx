@@ -1,6 +1,6 @@
 import React from "react";
-import InvestorsTable from "@/components/features/admin/InvestorsTable";
 import RecentTransactionTable from "@/components/features/admin/RecentTransaction";
+import OverviewInvestorsTable from "@/components/features/admin/OverviewInvestorsTable";
 
 const Page = () => {
   const stats = [
@@ -28,7 +28,7 @@ const Page = () => {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-1 gap-10 bg-white pt-6 pb-10 px-6">
-          <InvestorsTable />
+          <OverviewInvestorsTable />
           <RecentTransactionTable />
         </div>
       </div>
