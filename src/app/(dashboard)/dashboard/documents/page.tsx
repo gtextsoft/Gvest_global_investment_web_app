@@ -100,30 +100,27 @@ const FileManagement = () => {
     <section className="flex flex-col w-full gap-2">
       <div className="flex flex-col gap-10 px-5">
         <div className="flex flex-col gap-6 px-6 py-6 md:p-6 bg-white rounded-b-xl min-h-screen">
-          <h2 className="font-normal text-xl">My Document</h2>
-          <div className="flex">
-            <div className="flex w-full">
-              <button
-                className={`flex cursor-pointer px-5 transition-all justify-center items-center w-full max-w-80 py-3 ${
-                  !fileBtnToggle
-                    ? "bg-lonestar-950 text-white"
-                    : "bg-lonestar-100 text-lonestar-950"
-                }`}
-                onClick={() => setFileBtnToggle(false)}
-              >
-                My Documents
-              </button>
-              <button
-                className={`flex cursor-pointer px-5 transition-all justify-center items-center w-full max-w-80 py-3 ${
-                  fileBtnToggle
-                    ? "bg-lonestar-950 text-white"
-                    : "bg-lonestar-100 text-lonestar-950"
-                }`}
-                onClick={() => setFileBtnToggle(true)}
-              >
-                Company Documents
-              </button>
-            </div>
+          <div className="flex w-full">
+            <button
+              className={`flex cursor-pointer px-5 transition-all justify-center items-center w-full max-w-80 py-3 ${
+                !fileBtnToggle
+                  ? "bg-lonestar-950 text-white"
+                  : "bg-lonestar-100 text-lonestar-950"
+              }`}
+              onClick={() => setFileBtnToggle(false)}
+            >
+              My Documents
+            </button>
+            <button
+              className={`flex cursor-pointer px-5 transition-all justify-center items-center w-full max-w-80 py-3 ${
+                fileBtnToggle
+                  ? "bg-lonestar-950 text-white"
+                  : "bg-lonestar-100 text-lonestar-950"
+              }`}
+              onClick={() => setFileBtnToggle(true)}
+            >
+              Company Documents
+            </button>
           </div>
 
           {/* Document Type Filter */}

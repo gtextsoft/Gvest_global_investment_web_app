@@ -2,8 +2,8 @@ import Image from "next/image";
 import React from "react";
 import atmSim from "../../../../public/icons/atm_sim.svg";
 import KYC from "@/components/features/dashboard/KYC";
-import InvestmentRecord from "@/components/features/dashboard/InvestmentRecord";
 import TransactionRecords from "@/components/features/dashboard/TransactionRecord";
+import OverviewInvestmentRecord from "@/components/features/dashboard/OverviewInvestmentRecord";
 
 const Page = () => {
   const wallets = [
@@ -58,7 +58,7 @@ const Page = () => {
           </div>
         </div>
         <KYC />
-        <InvestmentRecord />
+        <OverviewInvestmentRecord />
         <TransactionRecords />
       </div>
     </section>
