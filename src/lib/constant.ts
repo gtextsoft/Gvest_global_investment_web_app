@@ -2,6 +2,7 @@ import nairaScheme from "../../public/images/investmentplans/nairascheme.png";
 import dollarscheme from "../../public/images/investmentplans/dollarscheme.png";
 import poundScheme from "../../public/images/investmentplans/poundScheme.png";
 
+
 export const investments = [
   {
     id: 1,
@@ -69,7 +70,6 @@ export const investments = [
   },
 ];
 
-
 export const transactions = [
   {
     purpose: "Saving Deposit",
@@ -132,6 +132,147 @@ export const transactions = [
     amount: "NGN 1,000,000",
     type: "Debit",
     date: "29 August, 2023",
+    reference: "GVETR6RQIV67DUN",
+  },
+];
+
+export const adminTransactions = [
+  {
+    name: "Bode Ulenpo",
+    amount: "NGN 100",
+    type: "Debit",
+    date: "08 February, 2024",
+    reference: "GVETRBSFHIKAY3D",
+  },
+  {
+    name: "Bode Ulenpo",
+    amount: "NGN 300,000",
+    type: "Debit",
+    date: "31 January, 2024",
+    reference: "GVETRLMH12R2XVR",
+  },
+  {
+    name: "Toni Meto",
+    amount: "NGN 300,000",
+    type: "Credit",
+    date: "31 January, 2024",
+    reference: "GVETRHCA7TTG25A",
+  },
+  {
+    name: "Toni Meto",
+    amount: "NGN 1,000",
+    type: "Credit",
+    date: "24 January, 2024",
+    reference: "ChargedFromAndr",
+  },
+  {
+    name: "Toni Meto",
+    amount: "NGN 1,000",
+    type: "Credit",
+    date: "24 January, 2024",
+    reference: "GVETRT3NK3C9I11",
+  },
+  {
+    name: "Toni Meto",
+    amount: "NGN 5,000,000",
+    type: "Credit",
+    date: "29 September, 2023",
+    reference: "GVETRFI3YZRJBLX",
+  },
+  {
+    name: "Occur Loren",
+    amount: "NGN 5,000,000",
+    type: "Debit",
+    date: "28 September, 2023",
+    reference: "GVETRF6I2RMXZM0",
+  },
+  {
+    name: "Occur Loren",
+    amount: "NGN 10,000,000",
+    type: "Debit",
+    date: "01 September, 2023",
+    reference: "GVETR9KEE0LZKF2",
+  },
+  {
+    name: "Occur Loren",
+    amount: "NGN 1,000,000",
+    type: "Debit",
+    date: "29 August, 2023",
+    reference: "GVETR6RQIV67DUN",
+  },
+];
+
+export const adminInvestments = [
+  {
+    name: "Bode Ulenpo",
+    amount: "NGN 100",
+    tenure: "20 Months 15%",
+    date: "08 February, 2024",
+    capitalDate: "08 February, 2024",
+    reference: "GVETRBSFHIKAY3D",
+  },
+  {
+    name: "Bode Ulenpo",
+    amount: "NGN 300,000",
+    tenure: "20 Months 15%",
+    date: "31 January, 2024",
+    capitalDate: "31 January, 2024",
+    reference: "GVETRLMH12R2XVR",
+  },
+  {
+    name: "Toni Meto",
+    amount: "NGN 300,000",
+    tenure: "20 Months 15%",
+    date: "31 January, 2024",
+    capitalDate: "31 January, 2024",
+    reference: "GVETRHCA7TTG25A",
+  },
+  {
+    name: "Toni Meto",
+    amount: "NGN 1,000",
+    tenure: "20 Months 15%",
+    date: "24 January, 2024",
+    capitalDate: "24 January, 2024",
+    reference: "ChargedFromAndr",
+  },
+  {
+    name: "Toni Meto",
+    amount: "NGN 1,000",
+    tenure: "20 Months 15%",
+    date: "24 January, 2024",
+    capitalDate: "24 January, 2024",
+    reference: "GVETRT3NK3C9I11",
+  },
+  {
+    name: "Toni Meto",
+    amount: "NGN 5,000,000",
+    tenure: "20 Months 15%",
+    date: "29 September, 2023",
+    capitalDate: "29 September, 2023",
+    reference: "GVETRFI3YZRJBLX",
+  },
+  {
+    name: "Occur Loren",
+    amount: "NGN 5,000,000",
+    tenure: "20 Months 15%",
+    date: "28 September, 2023",
+    capitalDate: "28 September, 2023",
+    reference: "GVETRF6I2RMXZM0",
+  },
+  {
+    name: "Occur Loren",
+    amount: "NGN 10,000,000",
+    tenure: "20 Months 15%",
+    date: "01 September, 2023",
+    capitalDate: "01 September, 2023",
+    reference: "GVETR9KEE0LZKF2",
+  },
+  {
+    name: "Occur Loren",
+    amount: "NGN 1,000,000",
+    tenure: "20 Months 15%",
+    date: "29 August, 2023",
+    capitalDate: "29 August, 2023",
     reference: "GVETR6RQIV67DUN",
   },
 ];
