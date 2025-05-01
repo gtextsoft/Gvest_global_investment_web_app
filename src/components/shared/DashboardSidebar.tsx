@@ -56,8 +56,16 @@ const userMenuBottom = [
 const adminMenuTop = [
   { name: "Admin Dashboard", icon: ShieldCheck, href: "/admin" },
   { name: "User Management", icon: UsersRound, href: "/admin/investors" },
-  { name: "Investment Plans", icon: BriefcaseBusiness, href: "/admin/investment-plans" },
-  { name: "All Investments", icon: ChartNoAxesCombined, href: "/admin/investments" },
+  {
+    name: "Investment Plans",
+    icon: BriefcaseBusiness,
+    href: "/admin/investment-plans",
+  },
+  {
+    name: "All Investments",
+    icon: ChartNoAxesCombined,
+    href: "/admin/investments",
+  },
   { name: "Transactions", icon: ArrowLeftRight, href: "/admin/transactions" },
   { name: "Wallets", icon: Wallet, href: "/admin/wallets" },
   { name: "Documents", icon: File, href: "/admin/documents" },
@@ -105,19 +113,18 @@ const DashboardSidebar = () => {
 
       <nav
         className={`flex flex-col h-full px-4 gap-20 space-y-4 overflow-y-scroll pb-4 ${
-          collapsed ? "items-center !px-2" : "items-start"
+          collapsed ? "items-center !px-3" : "items-start"
         }`}
       >
         {/* Top Menu Items */}
-        <div className="flex flex-col gap-4 space-y-4 flex-grow m-0">
+        <div className="flex flex-col gap-4 space-y-4 flex-grow m-0 max-w-40 w-full">
           {menuItemsTop.map((item) => (
             <Link
               key={item.name}
               href={item.href}
               className={`flex items-center transition-all w-full h-10 m-0 duration-300 gap-2 p-2 hover:bg-lonestar-950 hover:text-white rounded-md  
-              ${
-                currentRoute === item.href ? "bg-lonestar-950 text-white" : ""
-              }`}
+              ${currentRoute === item.href ? "bg-lonestar-950 text-white" : ""}
+              ${collapsed && "justify-center"}`}
             >
               <item.icon size={20} />
               <span
@@ -132,12 +139,14 @@ const DashboardSidebar = () => {
         </div>
 
         {/* Bottom Menu Items */}
-        <div className="flex flex-col gap-4 space-y-4 flex-grow m-0 w-full">
+        <div className="flex flex-col gap-4 space-y-4 flex-grow m-0 max-w-40 w-full">
           {menuItemsBottom.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="flex items-center transition-all w-full h-10 m-0 duration-300 gap-2 p-2 hover:bg-lonestar-950 hover:text-white rounded-md"
+              className={`flex items-center transition-all w-full h-10 m-0 duration-300 gap-2 p-2 hover:bg-lonestar-950 hover:text-white rounded-md ${
+                collapsed ? "justify-center" : ""
+              }`}
             >
               <item.icon size={20} />
               <span

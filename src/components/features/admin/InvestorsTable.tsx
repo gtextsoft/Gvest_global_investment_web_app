@@ -9,84 +9,38 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useAllUsers } from "@/hooks/adminHooks";
+import { useRouter } from "next/navigation";
+
+const ITEMS_PER_PAGE = 10;
 
 const InvestorsTable = () => {
+  const router = useRouter();
+  const { data, isLoading, isError } = useAllUsers();
   const [currentPage, setCurrentPage] = useState(0);
-  // Investors Data
-  const investorsList = [
-    {
-      name: "Gbade Adetona",
-      email: "tona_ga@yahoo.co.uk",
-      recentPayment: "$2,500",
-      investments: 5,
-      priority: "View Detail",
-    },
-    {
-      name: "Kenechukwu Aneke",
-      email: "ken.aneke@outlook.com",
-      recentPayment: "$1,200",
-      investments: "Credit",
-      priority: "View Detail",
-    },
-    {
-      name: "Oyetayo TOBI",
-      email: "oyetayo93@gmail.com",
-      recentPayment: "$0",
-      investments: "Credit",
-      priority: "View Detail",
-    },
-    {
-      name: "Joseph Shaibu",
-      email: "jshaibu58@gmail.com",
-      recentPayment: "$200",
-      investments: "Credit",
-      priority: "View Detail",
-    },
-    {
-      name: "Jane Doe",
-      email: "janedoe@example.com",
-      recentPayment: "$3,400",
-      investments: 7,
-      priority: "View Detail",
-    },
-    {
-      name: "John Smith",
-      email: "johnsmith@example.com",
-      recentPayment: "$4,500",
-      investments: 8,
-      priority: "View Detail",
-    },
-    {
-      name: "Alice Johnson",
-      email: "alice@example.com",
-      recentPayment: "$0",
-      investments: 2,
-      priority: "View Detail",
-    },
-  ];
-  // Show only first 6 investors
-  const ITEMS_TO_DISPLAY = 5;
 
-  const totalPages = Math.ceil(investorsList.length / ITEMS_TO_DISPLAY);
+  const users = data?.data?.users || [];
+  const totalPages = Math.ceil(users.length / ITEMS_PER_PAGE);
 
-  // Calculate paginated data
-  const paginatedInvestors = investorsList.slice(
-    currentPage * ITEMS_TO_DISPLAY,
-    (currentPage + 1) * ITEMS_TO_DISPLAY
+  const paginatedInvestors = users.slice(
+    currentPage * ITEMS_PER_PAGE,
+    (currentPage + 1) * ITEMS_PER_PAGE
   );
 
-  // Navigation handlers
   const nextPage = () => {
     if (currentPage + 1 < totalPages) {
-      setCurrentPage(currentPage + 1);
+      setCurrentPage((prev) => prev + 1);
     }
   };
 
   const prevPage = () => {
     if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
+      setCurrentPage((prev) => prev - 1);
     }
   };
+
+  if (isLoading) return <div>Loading investors...</div>;
+  if (isError) return <div>Failed to load investors.</div>;
 
   return (
     <div>
@@ -95,39 +49,45 @@ const InvestorsTable = () => {
           <TableRow>
             <TableHead className="text-lonestar-900 py-4">Name</TableHead>
             <TableHead className="text-lonestar-900 py-4">Email</TableHead>
-            <TableHead className="text-lonestar-900 py-4">
-              Recent Payment
-            </TableHead>
+            <TableHead className="text-lonestar-900 py-4">Phone</TableHead>
             <TableHead className="text-lonestar-900 py-4">
               No. of Investments
+            </TableHead>
+            <TableHead className="text-lonestar-900 py-4">
+              Verification
             </TableHead>
             <TableHead className="text-lonestar-900 py-4">Priority</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {paginatedInvestors.length > 0 ? (
-            paginatedInvestors.map((investor, index) => (
+            paginatedInvestors.map((investor: any, index: number) => (
               <TableRow
                 key={index}
                 className="cursor-pointer hover:bg-lonestar-50/50"
-                // onClick={() => router.push(`/dashboard/investors/${index}`)}
+                onClick={() => router.push(`/admin/investors/${investor._id}`)}
               >
-                <TableCell className="font-medium py-5">
-                  {investor.name}
+                <TableCell className="font-medium py-5 capitalize">
+                  {investor.first_name} {investor.last_name}
                 </TableCell>
                 <TableCell>{investor.email}</TableCell>
-                <TableCell>{investor.recentPayment}</TableCell>
-                <TableCell>{investor.investments}</TableCell>
+                <TableCell>{investor.phone}</TableCell>
+                <TableCell className="text-center">
+                  {investor.noOfInvestments}
+                </TableCell>
+                <TableCell className="text-center">
+                  {investor.account_verification === true ? "True" : "False"}
+                </TableCell>
                 <TableCell>
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={(e) => {
                       e.stopPropagation();
-                    //   router.push(`/dashboard/investors/${index}`);
+                        router.push(`/admin/investors/${investor._id}`);
                     }}
                   >
-                    {investor.priority}
+                    View Details
                   </Button>
                 </TableCell>
               </TableRow>
@@ -143,7 +103,8 @@ const InvestorsTable = () => {
       </Table>
 
       {/* Pagination Controls */}
-      {investorsList.length > ITEMS_TO_DISPLAY && (
+      {/* Pagination Controls */}
+      {users.length > ITEMS_PER_PAGE && (
         <div className="flex justify-between items-center mt-4">
           <Button
             onClick={prevPage}
@@ -157,7 +118,6 @@ const InvestorsTable = () => {
             Previous
           </Button>
 
-          {/* Page Indicator */}
           <span className="text-sm font-medium text-gray-700">
             Page {currentPage + 1} of {totalPages}
           </span>

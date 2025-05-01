@@ -19,7 +19,7 @@ export function AvatarWithNotification() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className={`relative p-0 rounded-full ${notifications.length > 0 && ""} `}>
+        <Button variant="ghost" className={`relative p-0 !px-2 rounded-full ${notifications.length > 0 && ""} `}>
           {/* Avatar */}
           <Bell className="size-5"/>
 
