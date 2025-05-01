@@ -12,12 +12,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useAdminAllDocuments } from "@/hooks/adminHooks";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 const ITEMS_PER_PAGE = 10;
 
 const DocumentPage = () => {
-  const router = useRouter();
+  // const router = useRouter();
   const searchParams = useSearchParams();
 
   const { data, isPending, isError } = useAdminAllDocuments();
