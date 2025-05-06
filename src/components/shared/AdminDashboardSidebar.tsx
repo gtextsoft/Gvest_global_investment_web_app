@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import {
   Settings,
@@ -25,6 +25,7 @@ import {
 
 import gVestLogo from "../../../public/icons/gVestLogo.svg";
 import { Button } from "../ui/button";
+import { useLogout } from "@/hooks/useAdminMutation";
 
 const userMenuTop = [
   { name: "Dashboard", icon: LayoutGrid, href: "/dashboard" },
@@ -46,14 +47,14 @@ const userMenuTop = [
 ];
 
 const userMenuBottom = [
-  { name: "Settings", icon: Settings, href: "/dashboard/settings" },
+  { name: "Settings", icon: UserCog, href: "/dashboard/settings" },
   { name: "Help Center", icon: Headset, href: "/dashboard/help" },
   { name: "Logout", icon: LogOut, href: "/logout" },
 ];
 
 const adminMenuTop = [
-  { name: "Admin Dashboard", icon: ShieldCheck, href: "/admin" },
-  { name: "User Management", icon: Users, href: "/admin/users" },
+  { name: "Overview", icon: ShieldCheck, href: "/admin" },
+  { name: "Investors", icon: Users, href: "/admin/investors" },
   {
     name: "Investments",
     icon: ChartNoAxesCombined,
@@ -61,17 +62,25 @@ const adminMenuTop = [
   },
   { name: "Transactions", icon: ArrowLeftRight, href: "/admin/transactions" },
   { name: "Documents", icon: File, href: "/admin/documents" },
-  { name: "Settings", icon: UserCog, href: "/admin/settings" },
 ];
 
 const adminMenuBottom = [
-  { name: "Help Center", icon: Headset, href: "/admin/help" },
-  { name: "Logout", icon: LogOut, href: "/logout" },
+  // { name: "Settings", icon: Settings, href: "/admin/settings" },
+  { name: "Logout", icon: LogOut, isLogout: true },
 ];
 
 const AdminDashboardSidebar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const currentRoute = usePathname();
+  const router = useRouter();
+  const { mutate: logout } = useLogout();
+
+  const handleLogout = () => {
+    logout();
+    router.push("/admin/sign-in")
+    console.log("Done Logout");
+    
+  };
 
   // Determine if the user is in admin or user dashboard
   const isAdmin = useMemo(
@@ -105,19 +114,18 @@ const AdminDashboardSidebar = () => {
 
       <nav
         className={`flex flex-col h-full px-4 gap-20 space-y-4 overflow-y-scroll pb-4 ${
-          collapsed ? "items-center !px-2" : "items-start"
+          collapsed ? "items-center !px-3" : "items-start"
         }`}
       >
         {/* Top Menu Items */}
-        <div className="flex flex-col gap-4 space-y-4 flex-grow m-0">
+        <div className="flex flex-col gap-4 space-y-4 flex-grow m- w-full">
           {menuItemsTop.map((item) => (
             <Link
               key={item.name}
               href={item.href}
               className={`flex items-center transition-all w-full h-10 m-0 duration-300 gap-2 p-2 hover:bg-lonestar-950 hover:text-white rounded-md  
-              ${
-                currentRoute === item.href ? "bg-lonestar-950 text-white" : ""
-              }`}
+              ${currentRoute === item.href ? "bg-lonestar-950 text-white" : ""}
+               ${collapsed && "justify-center"}`}
             >
               <item.icon size={20} />
               <span
@@ -133,11 +141,13 @@ const AdminDashboardSidebar = () => {
 
         {/* Bottom Menu Items */}
         <div className="flex flex-col gap-4 space-y-4 flex-grow m-0 w-full">
-          {menuItemsBottom.map((item) => (
+          {/* {menuItemsBottom.map((item) => (
             <Link
               key={item.name}
               href={item.href}
-              className="flex items-center transition-all w-full h-10 m-0 duration-300 gap-2 p-2 hover:bg-lonestar-950 hover:text-white rounded-md"
+              className={`flex items-center transition-all w-full h-10 m-0 duration-300 gap-2 p-2 hover:bg-lonestar-950 hover:text-white rounded-md  ${
+                collapsed && "justify-center"
+              }`}
             >
               <item.icon size={20} />
               <span
@@ -148,7 +158,45 @@ const AdminDashboardSidebar = () => {
                 {item.name}
               </span>
             </Link>
-          ))}
+          ))} */}
+
+          {menuItemsBottom.map((item) => {
+            const isLogout = item.name === "Logout";
+            const content = (
+              <>
+                <item.icon size={20} />
+                <span
+                  className={`transition-opacity text-sm duration-300 ${
+                    collapsed ? "opacity-0 w-0 hidden" : "opacity-100 w-auto"
+                  }`}
+                >
+                  {item.name}
+                </span>
+              </>
+            );
+
+            return isLogout ? (
+              <button
+                key={item.name}
+                onClick={handleLogout}
+                className={`flex items-center transition-all w-full h-10 m-0 duration-300 gap-2 p-2 hover:bg-lonestar-950 hover:text-white rounded-md ${
+                  collapsed && "justify-center"
+                }`}
+              >
+                {content}
+              </button>
+            ) : (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`flex items-center transition-all w-full h-10 m-0 duration-300 gap-2 p-2 hover:bg-lonestar-950 hover:text-white rounded-md ${
+                  collapsed && "justify-center"
+                }`}
+              >
+                {content}
+              </Link>
+            );
+          })}
         </div>
       </nav>
     </aside>

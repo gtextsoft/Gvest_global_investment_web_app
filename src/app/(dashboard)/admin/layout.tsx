@@ -1,5 +1,5 @@
-import DashboardHeader from "@/components/shared/DashboardHeader";
-import DashboardSidebar from "@/components/shared/DashboardSidebar";
+import AdminDashboardHeader from "@/components/shared/AdminDashboardHeader";
+import AdminDashboardSidebar from "@/components/shared/AdminDashboardSidebar";
 import { Inter } from "next/font/google";
 
 const inter = Inter({
@@ -14,9 +14,9 @@ export default function DashboardLayout({
 }) {
   return (
     <div className={`${inter.variable} flex h-screen`}>
-      <DashboardSidebar />
+      <AdminDashboardSidebar />
       <div className="flex-1 font-inter flex w-full flex-col overflow-hidden bg-[#ffff]">
-        <DashboardHeader />
+        <AdminDashboardHeader />
         <main className="container flex-1 w-full mx-auto overflow-y-scroll bg-[#ffff]">{children}</main>
       </div>
     </div>

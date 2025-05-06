@@ -1,213 +1,279 @@
 "use client";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import React, { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { Download } from "lucide-react";
 import {
   Table,
-  TableHeader,
-  TableRow,
-  TableHead,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
-import { useState } from "react";
-import { ArrowUpDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useAdminAllDocuments } from "@/hooks/adminHooks";
+import { useSearchParams } from "next/navigation";
 
-const documents = {
-  myDocuments: [
-    {
-      uploadDate: "Jan 5, 2024",
-      title: "Investment Agreement - Jasper Estate.",
-      description: "Detailed agreement for Phase 1 real estate deals.",
-      type: "Contract",
-    },
-    {
-      uploadDate: "Dec 12, 2024",
-      title: "Monthly ROI Report - October 2023",
-      description: "Summary of returns for October 2023 investments.",
-      type: "Report",
-    },
-    {
-      uploadDate: "Dec 12, 2024",
-      title: "Land Acquisition Proposal",
-      description: "Proposal for acquiring land in emerging markets.",
-      type: "Proposal",
-    },
-  ],
-  companyDocuments: [
-    {
-      uploadDate: "Dec 12, 2024",
-      title: "Compliance Checklist - Q3 2023",
-      description: "Checklist ensuring legal compliance for Q3.",
-      type: "Legal Document",
-    },
-    {
-      uploadDate: "Dec 12, 2024",
-      title: "Jasper Estate Progress Update",
-      description: "Updates on Jasper Estate construction milestones.",
-      type: "Update",
-    },
-  ],
-};
+const ITEMS_PER_PAGE = 10;
 
-const ITEMS_PER_PAGE = 5;
+const DocumentPage = () => {
+  // const router = useRouter();
+  const searchParams = useSearchParams();
 
-const FileManagement = () => {
-  const [fileBtnToggle, setFileBtnToggle] = useState(false);
-  const [filterType, setFilterType] = useState("All");
-  const [sortOrder, setSortOrder] = useState("asc");
+  const { data, isPending, isError } = useAdminAllDocuments();
+  const documents = data?.data?.documents || [];
+
+  const [emailFilter, setEmailFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [sortOrder, setSortOrder] = useState<"latest" | "oldest">("latest");
   const [currentPage, setCurrentPage] = useState(1);
 
-  const activeDocuments = fileBtnToggle
-    ? documents.companyDocuments
-    : documents.myDocuments;
-  const filteredDocuments =
-    filterType === "All"
-      ? activeDocuments
-      : activeDocuments.filter((doc) => doc.type === filterType);
+  useEffect(() => {
+    const query = searchParams.get("query");
+    const status = searchParams.get("status");
+    const sort = searchParams.get("sort");
+    const page = searchParams.get("page");
 
-  const sortedDocuments = [...filteredDocuments].sort((a, b) => {
-    const dateA = new Date(a.uploadDate).getTime();
-    const dateB = new Date(b.uploadDate).getTime();
-    return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
-  });
+    if (query) setEmailFilter(query);
+    if (status) setStatusFilter(status);
+    if (sort === "latest" || sort === "oldest") setSortOrder(sort);
+    if (page) setCurrentPage(parseInt(page));
+  }, [searchParams]);
 
-  const totalPages = Math.ceil(sortedDocuments.length / ITEMS_PER_PAGE);
-  const paginatedDocuments = sortedDocuments.slice(
+  const updateQueryParams = ({
+    query = emailFilter,
+    status = statusFilter,
+    sort = sortOrder,
+    page = currentPage,
+  }) => {
+    const params = new URLSearchParams();
+    if (query) params.set("query", query);
+    if (status) params.set("status", status);
+    if (sort) params.set("sort", sort);
+    if (page) params.set("page", page.toString());
+
+    // router.push(`/admin/document/all?${params.toString()}`);
+  };
+
+  const filteredDocuments = useMemo(() => {
+    let result = [...documents];
+
+    if (emailFilter) {
+      result = result.filter((doc) =>
+        doc.email.toLowerCase().includes(emailFilter.toLowerCase())
+      );
+    }
+
+    if (statusFilter) {
+      result = result.filter((doc) => doc.status === statusFilter);
+    }
+
+    result.sort((a, b) => {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return sortOrder === "latest" ? dateB - dateA : dateA - dateB;
+    });
+
+    return result;
+  }, [documents, emailFilter, statusFilter, sortOrder]);
+
+  const totalPages = Math.ceil(filteredDocuments.length / ITEMS_PER_PAGE);
+  const currentDocuments = filteredDocuments.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
     currentPage * ITEMS_PER_PAGE
   );
 
-  const toggleSortOrder = () => {
-    setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-  };
-
-  const nextPage = () => {
-    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
-  };
-
-  const prevPage = () => {
-    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
-  };
-
   return (
     <section className="flex flex-col w-full gap-2">
-      <div className="flex flex-col gap-10 px-5">
-        <div className="flex flex-col gap-6 px-6 py-6 md:p-6 bg-white rounded-b-xl min-h-screen">
-          <div className="flex w-full">
-            <button
-              className={`flex cursor-pointer px-5 transition-all justify-center items-center w-full max-w-80 py-3 ${
-                !fileBtnToggle
-                  ? "bg-lonestar-950 text-white"
-                  : "bg-lonestar-100 text-lonestar-950"
-              }`}
-              onClick={() => setFileBtnToggle(false)}
-            >
-              Users Documents
-            </button>
-            <button
-              className={`flex cursor-pointer px-5 transition-all justify-center items-center w-full max-w-80 py-3 ${
-                fileBtnToggle
-                  ? "bg-lonestar-950 text-white"
-                  : "bg-lonestar-100 text-lonestar-950"
-              }`}
-              onClick={() => setFileBtnToggle(true)}
-            >
-              Company Documents
-            </button>
-          </div>
+      <div className="flex flex-col gap-10">
+          {isPending ? (
+            <div className="flex justify-center items-center py-8">
+              <span className="text-md md:text-lg text-gray-500">
+                Loading Documents...
+              </span>
+            </div>
+          ) : isError ? (
+            <div className="flex justify-center items-center py-8">
+              <span className="text-md md:text-lg text-red-500">
+                Failed to load Documents. Please try again later.
+              </span>
+            </div>
+          ) : (
+            <>
+            <div className="w-full p-4 md:p-6 bg-white">
+              <div className="mb-6">
+                <h1 className="text-xl font-semibold text-gray-800">
+                  Files Management
+                </h1>
+                <p className="text-sm text-gray-500">
+                  View uploaded user documents
+                </p>
+              </div>
 
-          {/* Document Type Filter */}
-          <Select onValueChange={(value) => setFilterType(value)}>
-            <SelectTrigger className="w-full md:w-[250px]">
-              <SelectValue placeholder="Select Document Type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="All">All Types</SelectItem>
-              {[...new Set(activeDocuments.map((doc) => doc.type))].map(
-                (type) => (
-                  <SelectItem key={type} value={type}>
-                    {type}
-                  </SelectItem>
-                )
-              )}
-            </SelectContent>
-          </Select>
+              {/* Filters */}
+              <div className="flex flex-col md:flex-row md:items-end gap-4 mb-6">
+                {/* Email */}
+                <div className="flex-1">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Enter User Email Address
+                  </label>
+                  <input
+                    type="email"
+                    value={emailFilter}
+                    onChange={(e) => {
+                      setEmailFilter(e.target.value);
+                      updateQueryParams({ query: e.target.value, page: 1 });
+                    }}
+                    placeholder="e.g. user@example.com"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-lonestar-500"
+                  />
+                </div>
 
-          {/* Document List */}
-          <div className="mt-4">
-            <Table>
-              <TableHeader className="bg-lonestar-50 border border-gray-300">
-                <TableRow>
-                  <TableHead
-                    className="cursor-pointer text-lonestar-900 py-4"
-                    onClick={toggleSortOrder}
+                {/* Status */}
+                <div className="w-full md:w-48">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Status
+                  </label>
+                  <select
+                    value={statusFilter}
+                    onChange={(e) => {
+                      setStatusFilter(e.target.value);
+                      updateQueryParams({ status: e.target.value, page: 1 });
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-lonestar-500"
                   >
-                    Upload Date{" "}
-                    <ArrowUpDown size={16} className="inline-block ml-1" />
-                  </TableHead>
-                  <TableHead className="text-lonestar-900 py-4">
-                    Document Title
-                  </TableHead>
-                  <TableHead className="text-lonestar-900 py-4">
-                    Description
-                  </TableHead>
-                  <TableHead className="text-lonestar-900 py-4">
-                    Document Type
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {paginatedDocuments.map((doc, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="py-5">{doc.uploadDate}</TableCell>
-                    <TableCell className="font-semibold">{doc.title}</TableCell>
-                    <TableCell>{doc.description}</TableCell>
-                    <TableCell className="text-sm italic">{doc.type}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
+                    <option value="">All</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Rejected">Rejected</option>
+                  </select>
+                </div>
 
-          {/* Pagination Controls */}
-          <div className="flex justify-between mt-4">
-            <Button
-              onClick={prevPage}
-              disabled={currentPage === 1}
-              className={`px-4 py-2 border rounded ${
-                currentPage === 1
-                  ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                  : ""
-              }`}
-            >
-              Previous
-            </Button>
-            <span>
-              Page {currentPage} of {totalPages}
-            </span>
-            <Button
-              onClick={nextPage}
-              disabled={currentPage === totalPages}
-              className={`px-4 py-2 border rounded ${
-                currentPage === totalPages
-                  ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                  : ""
-              }`}
-            >
-              Next
-            </Button>
-          </div>
+                {/* Sort */}
+                <div className="w-full md:w-48">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Sort By
+                  </label>
+                  <select
+                    value={sortOrder}
+                    onChange={(e) => {
+                      const sort = e.target.value as "latest" | "oldest";
+                      setSortOrder(sort);
+                      updateQueryParams({ sort, page: 1 });
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-lonestar-500"
+                  >
+                    <option value="latest">Latest</option>
+                    <option value="oldest">Oldest</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Table */}
+              <div className="overflow-x-auto mt-4">
+                <Table>
+                  <TableHeader className="bg-lonestar-50 border border-gray-300">
+                    <TableRow>
+                      <TableHead className="py-4">Upload Date</TableHead>
+                      <TableHead className="py-4">User</TableHead>
+                      <TableHead className="py-4">Email</TableHead>
+                      <TableHead className="py-4">Document Type</TableHead>
+                      <TableHead className="py-4">Status</TableHead>
+                      <TableHead className="py-4">Action</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {currentDocuments.map((doc) => (
+                      <TableRow key={doc._id}>
+                        <TableCell className="py-4">
+                          {new Date(doc.createdAt).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell className="font-medium">
+                          {doc.customer}
+                        </TableCell>
+                        <TableCell className="max-w-40 w-full truncate">
+                          {doc.email}
+                        </TableCell>
+                        <TableCell className="max-w-40 w-full truncate">
+                          {doc.document_type}
+                        </TableCell>
+                        <TableCell>
+                          <span
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${
+                              doc.status === "Pending"
+                                ? "bg-yellow-100 text-yellow-700"
+                                : doc.status === "Approved"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-red-100 text-red-700"
+                            }`}
+                          >
+                            {doc.status}
+                          </span>
+                        </TableCell>
+                        <TableCell>
+                          <Link
+                            href={doc.document_url}
+                            target="_blank"
+                            className="text-sm flex items-center gap-1 text-blue-600 hover:underline"
+                          >
+                            View File <Download className="!size-4" />
+                          </Link>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+
+              {/* Pagination */}
+              <div className="flex items-center justify-between mt-6">
+                <button
+                  onClick={() => {
+                    const prev = Math.max(currentPage - 1, 1);
+                    setCurrentPage(prev);
+                    updateQueryParams({ page: prev });
+                  }}
+                  disabled={currentPage === 1}
+                  className="text-sm px-3 py-1 border rounded disabled:opacity-50"
+                >
+                  Prev
+                </button>
+                <div className="flex gap-2">
+                  {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => {
+                        setCurrentPage(i + 1);
+                        updateQueryParams({ page: i + 1 });
+                      }}
+                      className={`text-sm px-3 py-1 rounded border ${
+                        currentPage === i + 1
+                          ? "bg-lonestar-500 text-white"
+                          : ""
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  onClick={() => {
+                    const next = Math.min(currentPage + 1, totalPages);
+                    setCurrentPage(next);
+                    updateQueryParams({ page: next });
+                  }}
+                  disabled={currentPage === totalPages}
+                  className="text-sm px-3 py-1 border rounded bg-white disabled:opacity-50"
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </>
+          )}
         </div>
-      </div>
     </section>
   );
 };
 
-export default FileManagement;
+export default DocumentPage;

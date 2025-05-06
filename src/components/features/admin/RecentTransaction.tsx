@@ -11,100 +11,31 @@ import {
 import { useRouter } from "next/navigation";
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { useAdminAllTransaction } from "@/hooks/useAdminMutation";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
-// Transactions Data
-const transactions = [
-  {
-    refId: "GVETR9VDXXA9WXB",
-    amount: "NGN 100,000",
-    type: "Debit",
-    date: "Jan 09, 2025",
-    user: "EWAOLUWA ADENIJI",
-  },
-  {
-    refId: "GVETRNUVKCFFQ8I",
-    amount: "NGN 10,000,000",
-    type: "Debit",
-    date: "Jan 02, 2025",
-    user: "Olusegun Agbebi",
-  },
-  {
-    refId: "GVETRNUVKCFFQ8I",
-    amount: "NGN 10,000,000",
-    type: "Debit",
-    date: "Jan 02, 2025",
-    user: "Olusegun Agbebi",
-  },
-  {
-    refId: "GVETRNUVKCFFQ8I",
-    amount: "NGN 10,000,000",
-    type: "Debit",
-    date: "Jan 02, 2025",
-    user: "Olusegun Agbebi",
-  },
-  {
-    refId: "GVETR9VDXXA9WXB",
-    amount: "NGN 100,000",
-    type: "Debit",
-    date: "Jan 09, 2025",
-    user: "EWAOLUWA ADENIJI",
-  },
-  {
-    refId: "GVETRNUVKCFFQ8I",
-    amount: "NGN 10,000,000",
-    type: "Debit",
-    date: "Jan 02, 2025",
-    user: "Olusegun Agbebi",
-  },
-  {
-    refId: "GVETR9VDXXA9WXB",
-    amount: "NGN 100,000",
-    type: "Debit",
-    date: "Jan 09, 2025",
-    user: "EWAOLUWA ADENIJI",
-  },
-  {
-    refId: "GVETR9VDXXA9WXB",
-    amount: "NGN 100,000",
-    type: "Debit",
-    date: "Jan 09, 2025",
-    user: "EWAOLUWA ADENIJI",
-  },
-  {
-    refId: "GVETRNUVKCFFQ8I",
-    amount: "NGN 10,000,000",
-    type: "Debit",
-    date: "Jan 02, 2025",
-    user: "Olusegun Agbebi",
-  },
-  {
-    refId: "GVETR9VDXXA9WXB",
-    amount: "NGN 100,000",
-    type: "Debit",
-    date: "Jan 09, 2025",
-    user: "EWAOLUWA ADENIJI",
-  },
-  {
-    refId: "GVETRNUVKCFFQ8I",
-    amount: "NGN 10,000,000",
-    type: "Debit",
-    date: "Jan 02, 2025",
-    user: "Olusegun Agbebi",
-  },
-];
-
-// Show only first 6 investors
 const ITEMS_TO_DISPLAY = 6;
-const displayedTransactions = transactions.slice(0, ITEMS_TO_DISPLAY);
 
 const RecentTransactionTable = () => {
+  const { data, isPending, isError } = useAdminAllTransaction();
   const router = useRouter();
+
+  const displayedTransactions =
+    data?.data?.transactions?.slice(0, ITEMS_TO_DISPLAY) || [];
 
   return (
     <div className="grid w-full mx-auto md:col-span-2 gap-5">
       <div className="flex justify-between items-center w-full bg-white rounded-t-lg">
         <h2 className="text-base md:text-xl font-medium">
-          Recents Transaction
+          Recent Transactions
         </h2>
         <Button
           variant="link"
@@ -114,42 +45,161 @@ const RecentTransactionTable = () => {
           View More
         </Button>
       </div>
-      <Table>
-        <TableHeader className="bg-lonestar-50 border border-gray-300">
-          <TableRow>
-            <TableHead className="text-lonestar-900 py-4">Ref ID</TableHead>
-            <TableHead className="text-lonestar-900 py-4">Amount</TableHead>
-            <TableHead className="text-lonestar-900 py-4">Type</TableHead>
-            <TableHead className="text-lonestar-900 py-4">Date</TableHead>
-            <TableHead className="text-lonestar-900 py-4">User</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {displayedTransactions.length > 0 ? (
-            displayedTransactions.map((transactions, index) => (
-              <TableRow
-                key={index}
-                className="cursor-pointer hover:bg-lonestar-50/80"
-                onClick={() => router.push(`/dashboard/investors/${index}`)}
-              >
-                <TableCell className="font-medium py-5">
-                  {transactions.refId}
-                </TableCell>
-                <TableCell>{transactions.amount}</TableCell>
-                <TableCell>{transactions.type}</TableCell>
-                <TableCell>{transactions.date}</TableCell>
-                <TableCell>{transactions.user}</TableCell>
+
+      {isPending ? (
+        <div className="flex justify-center items-center py-8">
+          <span className="text-md md:text-lg text-gray-500">
+            Loading investments...
+          </span>
+        </div>
+      ) : isError ? (
+        <div className="flex justify-center items-center py-8">
+          <span className="text-md md:text-lg text-red-500">
+            Failed to load investments. Please try again later.
+          </span>
+        </div>
+      ) : (
+        <>
+          <Table>
+            <TableHeader className="bg-lonestar-50 border border-gray-300">
+              <TableRow>
+                <TableHead className="text-lonestar-900 py-4">Date</TableHead>
+                <TableHead className="text-lonestar-900">Purpose</TableHead>
+                <TableHead className="text-lonestar-900 py-4">Amount</TableHead>
+                <TableHead className="text-lonestar-900 py-4">Type</TableHead>
+                <TableHead className="text-lonestar-900 py-4">
+                  Reference
+                </TableHead>
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={5} className="text-center py-5 text-gray-500">
-                No investors available.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            </TableHeader>
+            <TableBody>
+              {displayedTransactions.length > 0 ? (
+                displayedTransactions.map((tx: any, index: number) => (
+                  <Dialog key={index}>
+                    <DialogTrigger asChild>
+                      <TableRow className="cursor-pointer">
+                        <TableCell>
+                          {new Date(tx.createdAt).toLocaleDateString("en-GB", {
+                            day: "numeric",
+                            month: "long",
+                            year: "numeric",
+                          })}
+                        </TableCell>
+                        <TableCell className="max-w-[220px] truncate font-medium py-5">
+                          {tx.transaction_purpose}
+                        </TableCell>
+                        <TableCell className="max-w-[220px] truncate">
+                          {tx.transaction_currency}{" "}
+                          {tx.transaction_amount.toLocaleString()}
+                        </TableCell>
+                        <TableCell className="max-w-[220px] truncate">
+                          <span
+                            className={`px-2 py-1 rounded text-sm font-medium ${
+                              tx.transaction_type === "Credit"
+                                ? "bg-[#c0ffc0] text-green-950 border-green-950/50"
+                                : " border-yellow-950/50 bg-yellow-100 text-yellow-900"
+                            }`}
+                          >
+                            {tx.transaction_type}
+                          </span>
+                        </TableCell>
+                        <TableCell className="max-w-[220px] truncate">
+                          {tx.transaction_ref}
+                        </TableCell>
+                      </TableRow>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-md p-0 gap-0">
+                      <DialogHeader className="pt-6 pb-2 px-4 sm:px-6 shadow">
+                        <DialogTitle className="text-left">
+                          Transaction Details
+                        </DialogTitle>
+                        <DialogDescription className="text-left">
+                          Below are more details for the selected transaction.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <div className="space-y-3 text-sm pt-4 px-4 sm:px-6 max-h-60 md:max-h-full overflow-y-auto">
+                        <p>
+                          <span className="font-semibold">Customer:</span>{" "}
+                          {tx.customer}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Description:</span>{" "}
+                          {tx.transaction_description}
+                        </p>
+                        <p>
+                          <span className="font-semibold">
+                            Transaction Purpose:
+                          </span>{" "}
+                          {tx.transaction_purpose}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Reference:</span>{" "}
+                          {tx.transaction_ref}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Amount:</span>{" "}
+                          {tx.transaction_currency}{" "}
+                          {tx.transaction_amount.toLocaleString()}
+                        </p>
+                        <p>
+                          <span className="font-semibold ">
+                            Transaction Type:
+                          </span>{" "}
+                          <span
+                            className={`px-2 py-1 rounded-sm font-semibold ${
+                              tx.transaction_type === "Credit"
+                                ? "bg-[#c0ffc0] text-green-950 border-green-950/50"
+                                : " border-yellow-950/50 bg-yellow-100 text-yellow-900"
+                            }`}
+                          >
+                            {tx.transaction_type}
+                          </span>
+                        </p>
+                        <p>
+                          <span className="font-semibold">Payment Method:</span>{" "}
+                          {tx.transaction_payment_method}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Discount:</span>{" "}
+                          {tx.discount}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Created By:</span>{" "}
+                          {tx.createdBy}
+                        </p>
+                        <p>
+                          <span className="font-semibold">User ID:</span>{" "}
+                          {tx.user}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Created At:</span>{" "}
+                          {new Date(tx.createdAt).toLocaleDateString("en-GB")}
+                        </p>
+                        <p>
+                          <span className="font-semibold">Updated At:</span>{" "}
+                          {new Date(tx.updatedAt).toLocaleDateString("en-GB")}
+                        </p>
+                      </div>
+                      <DialogClose asChild>
+                        <Button className="mt-4 mb-3 mx-2">Close</Button>
+                      </DialogClose>
+                    </DialogContent>
+                  </Dialog>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={5}
+                    className="text-center py-5 text-gray-500"
+                  >
+                    No transactions available.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </>
+      )}
     </div>
   );
 };

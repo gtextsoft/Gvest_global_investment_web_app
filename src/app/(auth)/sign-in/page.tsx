@@ -15,31 +15,25 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-
-const formSchema = z.object({
-  email: z.string().email({ message: "Invalid email address." }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters long." }),
-  rememberMe: z.boolean().optional(),
-});
+import { useLoginMutation } from "@/hooks/useAuthMutation";
+import { signInFormSchema } from "@/util/schema";
 
 const SignIn = () => {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { mutate, isPending } = useLoginMutation();
+  const form = useForm<z.infer<typeof signInFormSchema>>({
+    resolver: zodResolver(signInFormSchema),
     defaultValues: {
       email: "",
       password: "",
-      rememberMe: false,
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values); // Replace with actual authentication logic
+  function onSubmit(values: z.infer<typeof signInFormSchema>) {
+    mutate(values);
   }
 
   return (
-    <section className="font-inter w-[90%] max-w-lg lg:max-w-6xl mx-auto grid gap-8 lg:items-center lg:justify-center py-20">
+    <section className="font-inter h-lvh w-[90%] max-w-lg lg:max-w-6xl mx-auto grid gap-8 lg:items-center lg:justify-center py-20">
       <div className="flex flex-col items-center gap-10 px-4">
         <div className="flex flex-col items-center">
           <h2 className="text-xl md:text-2xl font-normal">Welcome Back!</h2>
@@ -116,8 +110,8 @@ const SignIn = () => {
                 </a>
               </div>
 
-              <Button type="submit" className="w-full">
-                Sign In
+              <Button type="submit" className="w-full"  disabled={isPending}>
+                {isPending ? "Signing In..." : "Sign In"}
               </Button>
             </form>
           </Form>

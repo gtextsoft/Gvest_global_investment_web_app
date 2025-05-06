@@ -9,11 +9,19 @@ import Menu from "../../../public/icons/menu-icon.svg";
 import X from "../../../public/icons/x.svg";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
+import UserAvatar from "./UserAvatar";
+import { UserDropdown } from "../features/UserDropdown";
 
 const Header = () => {
   const router = useRouter();
   const [menuToggle, setMenuToggle] = useState(true);
-  //   const { isLogin } = useSelector((store) => store.user);
+  // const { isLogin } = useSelector((store) => store.user);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  );
+  const userAuth = useSelector((state: RootState) => state.auth);
   const navBar = [
     {
       id: 1,
@@ -31,13 +39,16 @@ const Header = () => {
       link: "/contact-us",
     },
   ];
-
+  console.log("isAuthenticated", isAuthenticated);
+  console.log("userAuth", userAuth?.user);
+  console.log("userRole", userAuth?.user?.role);
+  const profileImg = userAuth?.user?.profile_picture;
 
   return (
     <>
       <header className="flex items-center justify-center min-h-[40px] w-full sticky top-0 z-50 pt-5">
-      <section className="relative w-full max-w-7xl pl-3 sm:pl-5 pr-6 md:pr-8 mx-5 flex items-center justify-between shadow-md py-4 rounded-full bg-white">
-      <Link href="/">
+        <section className="relative w-full max-w-7xl pl-3 sm:pl-5 pr-6 md:pr-8 mx-5 flex items-center justify-between shadow-md py-4 rounded-full bg-white">
+          <Link href="/">
             <Image
               width={120}
               height={70}
@@ -69,33 +80,32 @@ const Header = () => {
           </div>
 
           <div className="hidden md:flex gap-3 items-center">
-            {/* {isLogin ? (
-              <Link
-                href="/dashboard"
-                className="trans hover:bg-white/80 font-medium text-[15px] border border-pry text-pry py-2 px-4 rounded  hover:text-pry/70"
-              >
-                Dashboard
-              </Link>
+            {isAuthenticated ? (
+              profileImg ? (
+                <UserDropdown />
+              ) : (
+                <UserAvatar size={40} />
+              )
             ) : (
-              <> */}
-            <Button
-              variant="secondary"
-              size="lg"
-              className="w-fit transition-all duration-300 ease-in-out"
-              onClick={() => router.push("/sign-in")}
-            >
-              Login
-            </Button>
-            <Button
-              variant="default"
-              size="lg"
-              className="w-fit transition-all duration-300 ease-in-out"
-              onClick={() => router.push("/sign-up")}
-            >
-              Register
-            </Button>
-            {/* </>
-            )} */}
+              <>
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className="w-fit transition-all duration-300 ease-in-out"
+                  onClick={() => router.push("/sign-in")}
+                >
+                  Login
+                </Button>
+                <Button
+                  variant="default"
+                  size="lg"
+                  className="w-fit transition-all duration-300 ease-in-out"
+                  onClick={() => router.push("/sign-up")}
+                >
+                  Register
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Nav */}
@@ -139,34 +149,34 @@ const Header = () => {
 
               {/* Login/Register buttons in Mobile Nav */}
               <div className="px-8 flex flex-col gap-5">
-                {/* {isLogin ? (
+                {isAuthenticated ? (
                   <Link
-                    href="/dashboard"
-                    className="trans hover:bg-white/80 font-medium text-[15px] border border-pry text-pry py-2 px-4 rounded  hover:text-pry/70"
+                    href={userAuth?.user?.role === "user" ? "/dashboard" : userAuth?.user?.role === "admin" ? "/admin" : ""}
+                    className="trans w-fit hover:bg-white/80 font-medium text-[15px] border border-pry text-pry py-2 px-4 rounded  hover:text-pry/70"
                     onClick={() => setMenuToggle(true)}
                   >
                     Dashboard
                   </Link>
                 ) : (
-                  <> */}
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  className="shadow-2xl w-fit transition-all duration-300 ease-in-out"
-                  onClick={() => router.push("/sign-in")}
-                >
-                  Login
-                </Button>
-                <Button
-                  variant="default"
-                  size="lg"
-                  className="shadow-2xl w-fit transition-all duration-300 ease-in-out"
-                  onClick={() => router.push("/sign-up")}
-                >
-                  Register
-                </Button>
-                {/* </>
-                )} */}
+                  <>
+                    <Button
+                      variant="secondary"
+                      size="lg"
+                      className="shadow-2xl w-fit transition-all duration-300 ease-in-out"
+                      onClick={() => router.push("/sign-in")}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      variant="default"
+                      size="lg"
+                      className="shadow-2xl w-fit transition-all duration-300 ease-in-out"
+                      onClick={() => router.push("/sign-up")}
+                    >
+                      Register
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>

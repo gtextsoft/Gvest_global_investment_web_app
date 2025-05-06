@@ -17,21 +17,9 @@ export const ProfileSettings: React.FC<ProfileSettingsProps> = ({
 }) => {
   return (
     <div className="grid gap-10">
-      <div className="flex flex-wrap gap-6 items-start md:items-center justify-between md:pr-5">
-        <div className="flex flex-col sm:flex-row flex-wrap md:items-center gap-2 text-base">
-          <Image
-            src={joe}
-            alt="avatar"
-            className="size-40 border rounded-full"
-          />
-          <div className="grid md:px-2.5">
-            <h4 className="text-xl font-medium text-black-950">Wade Warren</h4>
-            <p className="text-base truncate text-black-800">
-              wadewarrengmail@gmail.com
-            </p>
-          </div>
-        </div>
-        <Button className="w-fit !px-5" onClick={onToggleEdit}>
+      <div className="flex flex-wrap gap-6 items-start justify-between md:pr-5">
+      
+        <Button variant="outline" className="w-fit !px-5" onClick={onToggleEdit}>
           Edit
           <Edit3 />
         </Button>

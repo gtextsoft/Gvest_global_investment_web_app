@@ -32,17 +32,17 @@ export default function DashboardHeader() {
   const subPath = pathSegments[1] ? pageTitles[pathSegments[1]] || pathSegments[1] : null;
 
   const breadcrumb = (
-    <div className="flex items-center gap-2">
-      <Link href={roleHref} className="text-lonestar-950 hover:underline capitalize">
+    <div className="flex md:items-center flex-col md:flex-row md:gap-2">
+      <Link href={roleHref} className="text-sm sm:text-lg text-lonestar-950 hover:underline capitalize">
         {role}
       </Link>
-      {subPath && <span className="text-gray-500 capitalize">/ {subPath}</span>}
+      {subPath && <span className="text-sm sm:text-lg text-gray-500 capitalize">/ {subPath}</span>}
     </div>
   );
 
   return (
     <header className="bg-white shadow-sm border-b p-4 flex justify-between items-center">
-      <div className="container flex justify-between px-3 w-full mx-auto">
+      <div className="container flex items-center justify-between md:px-3 w-full mx-auto">
         <h1 className="text-lg font-semibold">{breadcrumb}</h1>
 
         <div className="flex items-center gap-1">

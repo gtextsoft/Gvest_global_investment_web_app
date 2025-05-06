@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import TransactionTable from "@/components/features/dashboard/TransactionTable";
 
 // Wallet Data
 const wallets = [
@@ -135,9 +136,9 @@ const Wallet = () => {
   );
 
   return (
-    <section className="flex flex-col w-full gap-2 px-5">
+    <section className="flex flex-col w-full gap-2 px-5 pb-4">
       {/* Wallet Section */}
-      <div className="flex flex-col gap-6 bg-white rounded-b-xl min-h-screen p-6">
+      <div className="flex w-full flex-col gap-6 bg-white rounded-b-xl min-h-screen p-6">
         <h2 className="font-medium text-xl">Wallet</h2>
 
         {/* Wallet Cards */}
@@ -158,7 +159,7 @@ const Wallet = () => {
         </div>
 
         {/* Toggle Wallet Actions */}
-        <div className="flex py-4">
+        <div className="flex pt-4">
           <div className="flex w-full">
             <button
               className={`py-4 px-5 transition-all w-fit ${
@@ -187,80 +188,15 @@ const Wallet = () => {
               Initiate Withdrawal
             </button>
           </div>
+          
         </div>
 
         {/* Deposit/Withdrawal History Table */}
-        <div className=" rounded-md">
-          <h2 className="text-lg font-medium mb-4">
-            {activeTab === "fund" ? "Deposit History" : "Withdrawal History"}
-          </h2>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader className="bg-lonestar-50 border border-gray-300">
-                <TableRow>
-                  <TableHead className="text-lonestar-900 py-4">Date</TableHead>
-                  <TableHead className="text-lonestar-900 py-4">Investment</TableHead>
-                  <TableHead className="text-lonestar-900 py-4">Amount</TableHead>
-                  <TableHead className="text-lonestar-900 py-4">Payment Method</TableHead>
-                  <TableHead className="text-lonestar-900 py-4">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {currentData.map((item, index) => (
-                  <TableRow key={index}>
-                    <TableCell className="py-5">{item.date}</TableCell>
-                    <TableCell>{item.investment}</TableCell>
-                    <TableCell>{item.amount.toLocaleString()}</TableCell>
-                    <TableCell>{item.method}</TableCell>
-                    <TableCell>
-                      <span
-                        className={`px-2 py-1 rounded text-sm font-medium ${
-                          item.status === "Completed"
-                            ? "bg-green-50 text-green-600"
-                            : "bg-yellow-100 text-yellow-600"
-                        }`}
-                      >
-                        {item.status}
-                      </span>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-
-          {/* Pagination */}
-          <div className="flex justify-between items-center mt-16">
-            <button
-              className={`px-4 py-2 rounded-md ${
-                currentPage === 1
-                  ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                  : "bg-lonestar-950 text-white"
-              }`}
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-            >
-              Previous
-            </button>
-            <span className="text-gray-700">
-              Page {currentPage} of {totalPages}
-            </span>
-            <button
-              className={`px-4 py-2 rounded-md ${
-                currentPage === totalPages
-                  ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-                  : "bg-lonestar-950 text-white"
-              }`}
-              onClick={() =>
-                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-              }
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </div>
-        </div>
       </div>
+        <div className="grid w-full gap-5 mb-5">
+          <h2 className="w-full font-medium text-xl">Withdraw History</h2>
+          <TransactionTable />
+        </div>
     </section>
   );
 };
