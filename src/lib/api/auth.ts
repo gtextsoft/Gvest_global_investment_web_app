@@ -9,6 +9,7 @@ interface LoginResponse {
   user: User;
   token: string;
 }
+
 export const loginUser = async (data: {
   email: string;
   password: string;
@@ -26,7 +27,10 @@ export const loginUser = async (data: {
   //   if (!res.ok) throw new Error("Login failed");
   //   return res.json();
   return {
-    user: data.email,
+    user: {
+      email: data.email,
+      role: "User"
+    },
     token: data.password,
   };
 };

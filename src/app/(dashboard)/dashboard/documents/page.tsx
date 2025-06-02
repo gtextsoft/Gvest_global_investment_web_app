@@ -14,17 +14,31 @@ import { Button } from "@/components/ui/button";
 import { useUserAllDocument } from "@/hooks/userProfileHook";
 import Link from "next/link";
 
+interface Document {
+  createdAt: string;
+  document_type: string;
+  status: string;
+  document_url: string;
+}
+
+interface NormalizedDocument {
+  uploadDate: string;
+  title: string;
+  description: string;
+  type: string;
+  documentUrl: string;
+}
+
 const ITEMS_PER_PAGE = 5;
 
 const FileManagement = () => {
-  const [filterType, setFilterType] = useState("All");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data, isPending, isError } = useUserAllDocument();
 
   const normalizedDocuments = Array.isArray(data?.data)
-    ? data.data.map((doc) => ({
+    ? data.data.map((doc: Document) => ({
         uploadDate: new Date(doc.createdAt).toLocaleDateString("en-US", {
           year: "numeric",
           month: "short",
@@ -39,12 +53,7 @@ const FileManagement = () => {
 
   const activeDocuments = normalizedDocuments;
 
-  const filteredDocuments =
-    filterType === "All"
-      ? activeDocuments
-      : activeDocuments.filter((doc) => doc.type === filterType);
-
-  const sortedDocuments = [...filteredDocuments].sort((a, b) => {
+  const sortedDocuments = [...activeDocuments].sort((a, b) => {
     const dateA = new Date(a.uploadDate).getTime();
     const dateB = new Date(b.uploadDate).getTime();
     return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
@@ -116,7 +125,7 @@ const FileManagement = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {paginatedDocuments.map((doc, index) => (
+                    {paginatedDocuments.map((doc: NormalizedDocument, index) => (
                       <TableRow key={index}>
                         <TableCell className="py-5">{doc.uploadDate}</TableCell>
                         <TableCell className="font-semibold">

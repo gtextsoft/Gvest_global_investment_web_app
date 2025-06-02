@@ -6,7 +6,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 import {
-  Settings,
+  // Settings,
   Users,
   ChevronLeft,
   ChevronRight,
@@ -27,7 +27,18 @@ import gVestLogo from "../../../public/icons/gVestLogo.svg";
 import { Button } from "../ui/button";
 import { useLogout } from "@/hooks/useAdminMutation";
 
-const userMenuTop = [
+type MenuItem = {
+  name: string;
+  icon: React.ElementType;
+  href: string;
+  isLogout?: boolean;
+} | {
+  name: string;
+  icon: React.ElementType;
+  isLogout: true;
+};
+
+const userMenuTop: MenuItem[] = [
   { name: "Dashboard", icon: LayoutGrid, href: "/dashboard" },
   {
     name: "Investment",
@@ -46,13 +57,13 @@ const userMenuTop = [
   { name: "Referrals", icon: Users, href: "/dashboard/referrals" },
 ];
 
-const userMenuBottom = [
+const userMenuBottom: MenuItem[] = [
   { name: "Settings", icon: UserCog, href: "/dashboard/settings" },
   { name: "Help Center", icon: Headset, href: "/dashboard/help" },
   { name: "Logout", icon: LogOut, href: "/logout" },
 ];
 
-const adminMenuTop = [
+const adminMenuTop: MenuItem[] = [
   { name: "Overview", icon: ShieldCheck, href: "/admin" },
   { name: "Investors", icon: Users, href: "/admin/investors" },
   {
@@ -64,7 +75,7 @@ const adminMenuTop = [
   { name: "Documents", icon: File, href: "/admin/documents" },
 ];
 
-const adminMenuBottom = [
+const adminMenuBottom: MenuItem[] = [
   // { name: "Settings", icon: Settings, href: "/admin/settings" },
   { name: "Logout", icon: LogOut, isLogout: true },
 ];
@@ -122,9 +133,9 @@ const AdminDashboardSidebar = () => {
           {menuItemsTop.map((item) => (
             <Link
               key={item.name}
-              href={item.href}
+              href={(item as { href: string }).href}
               className={`flex items-center transition-all w-full h-10 m-0 duration-300 gap-2 p-2 hover:bg-lonestar-950 hover:text-white rounded-md  
-              ${currentRoute === item.href ? "bg-lonestar-950 text-white" : ""}
+              ${currentRoute === (item as { href: string }).href ? "bg-lonestar-950 text-white" : ""}
                ${collapsed && "justify-center"}`}
             >
               <item.icon size={20} />
@@ -141,27 +152,7 @@ const AdminDashboardSidebar = () => {
 
         {/* Bottom Menu Items */}
         <div className="flex flex-col gap-4 space-y-4 flex-grow m-0 w-full">
-          {/* {menuItemsBottom.map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={`flex items-center transition-all w-full h-10 m-0 duration-300 gap-2 p-2 hover:bg-lonestar-950 hover:text-white rounded-md  ${
-                collapsed && "justify-center"
-              }`}
-            >
-              <item.icon size={20} />
-              <span
-                className={`transition-opacity text-sm duration-300 ${
-                  collapsed ? "opacity-0 w-0 hidden" : "opacity-100 w-auto"
-                }`}
-              >
-                {item.name}
-              </span>
-            </Link>
-          ))} */}
-
           {menuItemsBottom.map((item) => {
-            const isLogout = item.name === "Logout";
             const content = (
               <>
                 <item.icon size={20} />
@@ -175,20 +166,24 @@ const AdminDashboardSidebar = () => {
               </>
             );
 
-            return isLogout ? (
-              <button
-                key={item.name}
-                onClick={handleLogout}
-                className={`flex items-center transition-all w-full h-10 m-0 duration-300 gap-2 p-2 hover:bg-lonestar-950 hover:text-white rounded-md ${
-                  collapsed && "justify-center"
-                }`}
-              >
-                {content}
-              </button>
-            ) : (
+            if ('isLogout' in item && item.isLogout) {
+              return (
+                <button
+                  key={item.name}
+                  onClick={handleLogout}
+                  className={`flex items-center transition-all w-full h-10 m-0 duration-300 gap-2 p-2 hover:bg-lonestar-950 hover:text-white rounded-md ${
+                    collapsed && "justify-center"
+                  }`}
+                >
+                  {content}
+                </button>
+              );
+            }
+
+            return (
               <Link
                 key={item.name}
-                href={item.href}
+                href={(item as { href: string }).href}
                 className={`flex items-center transition-all w-full h-10 m-0 duration-300 gap-2 p-2 hover:bg-lonestar-950 hover:text-white rounded-md ${
                   collapsed && "justify-center"
                 }`}

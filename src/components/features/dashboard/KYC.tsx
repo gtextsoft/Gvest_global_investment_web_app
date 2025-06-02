@@ -28,6 +28,13 @@ const KYC = () => {
   // Find first incomplete step index for the "Continue" button
   const nextStepIndex = steps.findIndex((step) => !step.complete);
 
+  console.log('data', data);
+  console.log("user", user);
+  console.log("steps", steps);
+  console.log("completedSteps", completedSteps);
+  console.log("progressPercent", progressPercent);
+  console.log("nextStepIndex", nextStepIndex);
+
   return (
     <>
       {nextStepIndex !== -1 && (

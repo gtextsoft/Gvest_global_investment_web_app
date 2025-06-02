@@ -7,12 +7,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useUserAllTransaction } from "@/hooks/userProfileHook";
+import { useAdminAllTransaction } from "@/hooks/useAdminMutation";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -20,45 +20,69 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-const ITEMS_PER_PAGE = 5;
+interface Transaction {
+  _id: string;
+  transaction_type: string;
+  transaction_amount: number;
+  customer: string;
+  transaction_description: string;
+  transaction_currency: string;
+  transaction_payment_method: string;
+  discount: number;
+  transaction_ref: string;
+  transaction_purpose: string;
+  user: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+const ITEMS_TO_DISPLAY = 6;
 
 const TransactionTable = () => {
-  const { data, isPending, isError } = useUserAllTransaction();
-  const [currentPage, setCurrentPage] = useState(0);
-  const totalPages = Math.ceil(data?.data.length / ITEMS_PER_PAGE);
+  const { data, isPending, isError } = useAdminAllTransaction();
+  const router = useRouter();
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  const paginatedTransactions = data?.data.slice(
-    currentPage * ITEMS_PER_PAGE,
-    (currentPage + 1) * ITEMS_PER_PAGE
-  );
+  const displayedTransactions =
+    data?.data?.transactions?.slice(0, ITEMS_TO_DISPLAY) || [];
 
-  const nextPage = () => {
-    if (currentPage + 1 < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-
-  const prevPage = () => {
-    if (currentPage > 0) {
-      setCurrentPage(currentPage - 1);
-    }
+  const handleTransactionClick = (transaction: Transaction) => {
+    setSelectedTransaction(transaction);
+    setIsDialogOpen(true);
   };
 
   return (
-    <div className="w-full mx-auto">
+    <div className="grid w-full mx-auto md:col-span-2 gap-5">
+      <div className="flex justify-between items-center w-full bg-white rounded-t-lg">
+        <h2 className="text-base md:text-xl font-medium">
+          Recent Transactions
+        </h2>
+        <Button
+          variant="link"
+          className="py-0 px-0 md:px-4 text-xs md:text-sm hover:text-lonestar-950"
+          onClick={() => router.push("/admin/transactions")}
+        >
+          View More
+        </Button>
+      </div>
+
       {isPending ? (
         <div className="flex justify-center items-center py-8">
           <span className="text-md md:text-lg text-gray-500">
-            Loading investments...
+            Loading transactions...
           </span>
         </div>
       ) : isError ? (
         <div className="flex justify-center items-center py-8">
           <span className="text-md md:text-lg text-red-500">
-            Failed to load investments. Please try again later.
+            Failed to load transactions. Please try again later.
           </span>
         </div>
       ) : (
+        <>
         <Table>
           <TableHeader className="bg-lonestar-50 border border-gray-300">
             <TableRow>
@@ -72,12 +96,20 @@ const TransactionTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {paginatedTransactions && paginatedTransactions.length > 0 ? (
-              paginatedTransactions.map((tx: any, index: number) => (
-                <Dialog key={index}>
+              {displayedTransactions.length > 0 ? (
+                displayedTransactions.map((tx: Transaction, index: number) => (
+                  <Dialog 
+                    key={index}
+                    open={selectedTransaction?._id === tx._id && isDialogOpen}
+                    onOpenChange={(open) => {
+                      setIsDialogOpen(open);
+                      if (!open) setSelectedTransaction(null);
+                    }}
+                  >
                   <DialogTrigger asChild>
                     <TableRow
-                      className="cursor-pointer"
+                        className="cursor-pointer hover:bg-lonestar-50/50"
+                        onClick={() => handleTransactionClick(tx)}
                     >
                       <TableCell>
                         {new Date(tx.createdAt).toLocaleDateString("en-GB", {
@@ -109,62 +141,111 @@ const TransactionTable = () => {
                       </TableCell>
                     </TableRow>
                   </DialogTrigger>
-                  <DialogContent className="sm:max-w-md px-4 sm:px-6">
-                    <DialogHeader>
-                      <DialogTitle className="text-left">
-                        Transaction Details
-                      </DialogTitle>
-                      <DialogDescription className="text-left">
-                        Below are more details for the selected transaction.
+                    <DialogContent className="px-0 pt-0 gap-0 sm:max-w-md max-h-[90vh] overflow-hidden flex flex-col">
+                      <DialogHeader className="px-4 py-4 text-left flex-shrink-0 shadow">
+                        <DialogTitle>Transaction Details</DialogTitle>
+                        <DialogDescription>
+                          Quick overview of transaction information
                       </DialogDescription>
                     </DialogHeader>
-
-                    <div className="space-y-3 text-sm">
-                      <p>
-                        <span className="font-semibold">Description:</span>{" "}
+                      <div className="px-4 space-y-4 py-4 overflow-y-auto flex-1">
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium">Customer</p>
+                          <p className="text-sm text-gray-500">
+                            {tx.customer}
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium">Description</p>
+                          <p className="text-sm text-gray-500">
                         {tx.transaction_description}
                       </p>
-                      <p>
-                        <span className="font-semibold">
-                          Transaction Purpose:
-                        </span>{" "}
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium">Transaction Purpose</p>
+                          <p className="text-sm text-gray-500">
                         {tx.transaction_purpose}
                       </p>
-                      <p>
-                        <span className="font-semibold">Reference:</span>{" "}
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium">Reference</p>
+                          <p className="text-sm text-gray-500">
                         {tx.transaction_ref}
                       </p>
-                      <p>
-                        <span className="font-semibold">
-                          Transaction Amount:
-                        </span>{" "}
-                        {tx.transaction_currency}{" "}
-                        {tx.transaction_amount.toLocaleString()}
-                      </p>
-                      <p>
-                        <span className="font-semibold">Transaction Type:</span>{" "}
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium">Amount</p>
+                          <p className="text-sm text-gray-500">
+                            {tx.transaction_currency} {tx.transaction_amount.toLocaleString()}
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium">Transaction Type</p>
+                          <p className="text-sm text-gray-500">
+                            <span
+                              className={`px-2 py-1 rounded-sm font-semibold ${
+                                tx.transaction_type === "Credit"
+                                  ? "bg-[#c0ffc0] text-green-950 border-green-950/50"
+                                  : " border-yellow-950/50 bg-yellow-100 text-yellow-900"
+                              }`}
+                            >
                         {tx.transaction_type}
-                      </p>
-                      <p>
-                        <span className="font-semibold">Payment Method:</span>{" "}
+                            </span>
+                          </p>
+                        </div>
+                        <div className="flex flex-col sm:flex-row gap-4 w-full">
+                          <div className="space-y-2 flex-1">
+                            <p className="text-sm font-medium">Payment Method</p>
+                            <p className="text-sm text-gray-500">
                         {tx.transaction_payment_method}
                       </p>
-                      <p>
-                        <span className="font-semibold">Discount:</span>{" "}
+                          </div>
+                          <div className="space-y-2 flex-1">
+                            <p className="text-sm font-medium">Discount</p>
+                            <p className="text-sm text-gray-500">
                         {tx.discount}
                       </p>
-                      <p>
-                        <span className="font-semibold">Date:</span>{" "}
-                        {new Date(tx.createdAt).toLocaleDateString("en-GB", {
-                          day: "numeric",
-                          month: "long",
-                          year: "numeric",
-                        })}
+                          </div>
+                        </div>
+                        <div className="flex flex-col sm:flex-row gap-4 w-full">
+                          <div className="space-y-2 flex-1">
+                            <p className="text-sm font-medium">Created By</p>
+                            <p className="text-sm text-gray-500">
+                              {tx.createdBy}
+                            </p>
+                          </div>
+                          <div className="space-y-2 flex-1">
+                            <p className="text-sm font-medium">User ID</p>
+                            <p className="text-sm text-gray-500">
+                              {tx.user}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex flex-col sm:flex-row gap-4 w-full">
+                          <div className="space-y-2 flex-1">
+                            <p className="text-sm font-medium">Created At</p>
+                            <p className="text-sm text-gray-500">
+                              {new Date(tx.createdAt).toLocaleDateString("en-GB")}
+                            </p>
+                          </div>
+                          <div className="space-y-2 flex-1">
+                            <p className="text-sm font-medium">Updated At</p>
+                            <p className="text-sm text-gray-500">
+                              {new Date(tx.updatedAt).toLocaleDateString("en-GB")}
                       </p>
                     </div>
-                    <DialogClose asChild>
-                      <Button className="mt-4">Close</Button>
-                    </DialogClose>
+                        </div>
+                        <div className="flex px-2">
+                          <Button
+                            className="w-full mt-4"
+                            onClick={() =>
+                              router.push(`/admin/transactions/${tx._id}`)
+                            }
+                          >
+                            View Full Details
+                          </Button>
+                        </div>
+                      </div>
                   </DialogContent>
                 </Dialog>
               ))
@@ -180,38 +261,7 @@ const TransactionTable = () => {
             )}
           </TableBody>
         </Table>
-      )}
-
-      {/* Pagination Controls */}
-      {Array.isArray(data?.data) && data.data.length > ITEMS_PER_PAGE && (
-        // {paginatedTransactions?.length > ITEMS_PER_PAGE && (
-        <div className="flex justify-between items-center mt-4">
-          <Button
-            onClick={prevPage}
-            disabled={currentPage === 0}
-            className={`px-4 py-2 text-sm font-medium rounded-md ${
-              currentPage === 0
-                ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                : ""
-            }`}
-          >
-            Previous
-          </Button>
-          <span className="text-sm font-medium text-gray-700">
-            Page {currentPage + 1} of {totalPages}
-          </span>
-          <Button
-            onClick={nextPage}
-            disabled={currentPage + 1 >= totalPages}
-            className={`px-4 py-2 text-sm font-medium rounded-md ${
-              currentPage + 1 >= totalPages
-                ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                : ""
-            }`}
-          >
-            Next
-          </Button>
-        </div>
+        </>
       )}
     </div>
   );

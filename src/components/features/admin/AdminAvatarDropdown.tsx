@@ -1,16 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
-import { LogOut, Settings, User } from "lucide-react";
+// import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
+  // DropdownMenuLabel,
+  // DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import UserAvatar from "@/components/shared/UserAvatar";
@@ -19,7 +19,7 @@ import { RootState } from "@/store";
 import { useLogout } from "@/hooks/useAdminMutation";
 
 export function AdminAvatarDropdown() {
-  const router = useRouter();
+  // const router = useRouter();
   const { mutate: logout, isPending } = useLogout();
 
   const user = useSelector((state: RootState) => state.auth.user);

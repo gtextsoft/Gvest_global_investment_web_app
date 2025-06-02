@@ -16,6 +16,7 @@ export const API_ENDPOINTS = {
     ADDBANK: "/bank/add",
     BANKLISTING: "/bank/allbanks",
     REFERRAL: "/referral/get",
+    INVESTMENTPLANS: (type: string) => `/investmentPlan/plan-type?type=${type}`,
   },
   PROFILE: "/profile/get",
   HOSTEL: {

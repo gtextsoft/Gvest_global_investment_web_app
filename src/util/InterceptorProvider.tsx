@@ -3,7 +3,7 @@
 import { useEffect, ReactNode } from "react";
 // import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import axios from "axios";
+// import axios from "axios";
 // import { customFetch } from "./axios";
 // import { clearUser } from "@/redux/auth/authSlice";
 import axiosInstance from "@/lib/axiosInstance";

@@ -1,18 +1,15 @@
 "use client";
 
 import InvestorsProfile from "@/components/features/admin/InvestorsProfile";
-import EditProfile from "@/components/features/settings/EditProfile";
 import { PasswordSettings } from "@/components/features/settings/PasswordSettings";
 import { ProfileSettings } from "@/components/features/settings/ProfileSettings";
 import UserAvatar from "@/components/shared/UserAvatar";
 import { useUserDetail } from "@/hooks/adminHooks";
-import { useUserProfile } from "@/hooks/userProfileHook";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import React, { useState } from "react";
 
 const InvestorsDetails = () => {
-  const { data: userProfile } = useUserProfile();
   const { id } = useParams();
   const { data, isLoading, isError } = useUserDetail(id as string);
 

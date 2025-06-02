@@ -21,7 +21,7 @@ const DocumentPage = () => {
   const searchParams = useSearchParams();
 
   const { data, isPending, isError } = useAdminAllDocuments();
-  const documents = data?.data?.documents || [];
+  // const documents = data?.data?.documents || [];
 
   const [emailFilter, setEmailFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -56,7 +56,8 @@ const DocumentPage = () => {
   };
 
   const filteredDocuments = useMemo(() => {
-    let result = [...documents];
+    const docs = data?.data?.documents || [];
+    let result = [...docs]
 
     if (emailFilter) {
       result = result.filter((doc) =>
@@ -75,7 +76,7 @@ const DocumentPage = () => {
     });
 
     return result;
-  }, [documents, emailFilter, statusFilter, sortOrder]);
+  }, [data, emailFilter, statusFilter, sortOrder]);
 
   const totalPages = Math.ceil(filteredDocuments.length / ITEMS_PER_PAGE);
   const currentDocuments = filteredDocuments.slice(

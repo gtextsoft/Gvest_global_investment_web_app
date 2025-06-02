@@ -7,7 +7,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"; // <- Add this import
+} from "@/components/ui/dialog";
 import {
   Table,
   TableBody,
@@ -17,15 +17,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useAdminAllInvestments } from "@/hooks/useAdminMutation";
+import { Investment } from "@/types";
 
 const AdminInvestmentsTable = () => {
-  const { data, isLoading, isError } = useAdminAllInvestments();
+  const { data } = useAdminAllInvestments();
   const [currentPage, setCurrentPage] = useState(0);
-
-  // ✅ Add modal state
-  const [selectedInvestment, setSelectedInvestment] = useState<any | null>(
-    null
-  );
+  const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null);
   const [open, setOpen] = useState(false);
 
   const investments = data?.data?.investments || [];
@@ -34,7 +31,7 @@ const AdminInvestmentsTable = () => {
     (currentPage + 1) * 10
   );
 
-  const handleOpenModal = (investment: any) => {
+  const handleOpenModal = (investment: Investment) => {
     setSelectedInvestment(investment);
     setOpen(true);
   };
@@ -48,29 +45,25 @@ const AdminInvestmentsTable = () => {
             <TableHead className="text-lonestar-900 py-4 max-w-[150px] truncate">Name</TableHead>
             <TableHead className="text-lonestar-900 py-4 max-w-[150px] truncate">Customer</TableHead>
             <TableHead className="text-lonestar-900 py-4 max-w-[150px] truncate">Amount</TableHead>
-            <TableHead className="text-lonestar-900 py-4">
-              ROI Frequency
-            </TableHead>
-            <TableHead className="text-lonestar-900 py-4">
-              Pending Payment
-            </TableHead>
-            <TableHead className="text-lonestar-900 py-4">Details</TableHead>
+            <TableHead className="text-lonestar-900 py-4">ROI Frequency</TableHead>
+            <TableHead className="text-lonestar-900 py-4">Pending Payment</TableHead>
+            <TableHead className="text-lonestar-900 py-4">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {paginatedInvestments.map((inv, index) => (
+          {paginatedInvestments.map((investment: Investment, index: number) => (
             <TableRow key={index}>
-              <TableCell className="max-w-[150px] truncate">{inv.ref}</TableCell>
-              <TableCell className="max-w-[150px] truncate">{inv.name}</TableCell>
-              <TableCell className="max-w-[150px] truncate">{inv.customer}</TableCell>
-              <TableCell className="max-w-[150px] truncate">₦{Number(inv.actual_cost).toLocaleString()}</TableCell>
-              <TableCell className="text-center">{inv.roi_frequency || "—"}</TableCell>
-              <TableCell className="text-center">{inv.pending_payment ? "Yes" : "No"}</TableCell>
+              <TableCell className="max-w-[150px] truncate">{investment.ref}</TableCell>
+              <TableCell className="max-w-[150px] truncate">{investment.name}</TableCell>
+              <TableCell className="max-w-[150px] truncate">{investment.customer}</TableCell>
+              <TableCell className="max-w-[150px] truncate">₦{Number(investment.actual_cost).toLocaleString()}</TableCell>
+              <TableCell className="text-center">{investment.roi_frequency || "—"}</TableCell>
+              <TableCell className="text-center">{investment.pending_payment ? "Yes" : "No"}</TableCell>
               <TableCell>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handleOpenModal(inv)} // <- 🔁 Replace router.push with modal
+                  onClick={() => handleOpenModal(investment)}
                 >
                   View
                 </Button>
@@ -114,132 +107,50 @@ const AdminInvestmentsTable = () => {
   </Button>
 </div>
 
-
       {/* Investment Details Modal */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-lg p-0 pb-4 gap-0">
-          <DialogHeader className="shadow p-4">
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
             <DialogTitle>Investment Details</DialogTitle>
           </DialogHeader>
-          <div className="flex max-h-[400px] p-4 overflow-y-auto">
-          {console.log("selectedInvestment", selectedInvestment)}
-
           {selectedInvestment && (
-            <div className="space-y-3 text-sm text-gray-700">
-              <p>
-                <strong>Ref:</strong> {selectedInvestment.ref}
-              </p>
-              <p>
-                <strong>Name:</strong> {selectedInvestment.name}
-              </p>
-              <p>
-                <strong>Customer:</strong> {selectedInvestment.customer}
-              </p>
-              <p>
-                <strong>Currency:</strong> {selectedInvestment.currency}
-              </p>
-              <p>
-                <strong>Status:</strong> {selectedInvestment.status}
-              </p>
-              <p>
-                <strong>Matured:</strong>{" "}
-                {selectedInvestment.matured ? "Yes" : "No"}
-              </p>
-
-              <p>
-                <strong>Amount:</strong> ₦
-                {Number(selectedInvestment.actual_cost).toLocaleString()}
-              </p>
-              <p>
-                <strong>Unit Price:</strong> ₦
-                {Number(selectedInvestment.unit_price).toLocaleString()}
-              </p>
-              <p>
-                <strong>Total Unit:</strong> {selectedInvestment.total_unit}
-              </p>
-              <p>
-                <strong>ROI Frequency (months):</strong>{" "}
-                {selectedInvestment.roi_frequency}
-              </p>
-              <p>
-                <strong>Rate (%):</strong> {selectedInvestment.rate}
-              </p>
-              <p>
-                <strong>Return on Investment:</strong> ₦
-                {Number(
-                  selectedInvestment.return_on_investment
-                ).toLocaleString()}
-              </p>
-              <p>
-                <strong>Daily Income:</strong> ₦
-                {Number(selectedInvestment.daily_income).toFixed(2)}
-              </p>
-
-              <p>
-                <strong>Tenor (months):</strong> {selectedInvestment.tenor}
-              </p>
-              <p>
-                <strong>No. of ROI Payments:</strong>{" "}
-                {selectedInvestment.no_of_roi_payments}
-              </p>
-              <p>
-                <strong>ROI Payment Index:</strong>{" "}
-                {selectedInvestment.roi_payment_index}
-              </p>
-              <p>
-                <strong>Pending Payment:</strong>{" "}
-                {selectedInvestment.pending_payment ? "Yes" : "No"}
-              </p>
-
-              <p>
-                <strong>Investment Date:</strong>{" "}
-                {new Date(
-                  selectedInvestment.investment_date
-                ).toLocaleDateString()}
-              </p>
-              <p>
-                <strong>Maturity Date:</strong>{" "}
-                {new Date(
-                  selectedInvestment.maturity_date
-                ).toLocaleDateString()}
-              </p>
-              <p>
-                <strong>Capital Repayment Date:</strong>{" "}
-                {new Date(
-                  selectedInvestment.capital_repayment_date
-                ).toLocaleDateString()}
-              </p>
-
-              {selectedInvestment.annual_return !== undefined && (
-                <p>
-                  <strong>Annual Return:</strong> ₦
-                  {Number(selectedInvestment.annual_return).toLocaleString()}
-                </p>
-              )}
-
-              <p>
-                <strong>Created By (Admin ID):</strong>{" "}
-                {selectedInvestment.createdBy}
-              </p>
-              <p>
-                <strong>User ID:</strong> {selectedInvestment.user}
-              </p>
-
-              {selectedInvestment.annual_return_payment_date?.length > 0 && (
+            <div className="grid gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <strong>Annual Return Payment Dates:</strong>
-                  <ul className="list-disc list-inside">
-                    {selectedInvestment.annual_return_payment_date.map(
-                      (date: string, i: number) => (
-                        <li key={i}>{new Date(date).toLocaleDateString()}</li>
-                      )
-                    )}
-                  </ul>
+                  <h4 className="font-medium">Customer</h4>
+                  <p>{selectedInvestment.customer}</p>
                 </div>
-              )}
+                <div>
+                  <h4 className="font-medium">Status</h4>
+                  <p>{selectedInvestment.status}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium">Matured</h4>
+                  <p>{selectedInvestment.matured ? "Yes" : "No"}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium">Amount</h4>
+                  <p>₦{Number(selectedInvestment.actual_cost).toLocaleString()}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium">Total Units</h4>
+                  <p>{selectedInvestment.total_unit}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium">ROI Frequency</h4>
+                  <p>{selectedInvestment.roi_frequency || "—"}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium">Return on Investment</h4>
+                  <p>₦{Number(selectedInvestment.return_on_investment).toLocaleString()}</p>
+                </div>
+                <div>
+                  <h4 className="font-medium">Daily Income</h4>
+                  <p>₦{Number(selectedInvestment.daily_income).toLocaleString()}</p>
+                </div>
+              </div>
             </div>
           )}
-          </div>
         </DialogContent>
       </Dialog>
     </div>

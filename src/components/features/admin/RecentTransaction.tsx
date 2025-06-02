@@ -9,12 +9,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useAdminAllTransaction } from "@/hooks/useAdminMutation";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -22,14 +21,39 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+interface Transaction {
+  _id: string;
+  transaction_type: string;
+  transaction_amount: number;
+  customer: string;
+  transaction_description: string;
+  transaction_currency: string;
+  transaction_payment_method: string;
+  discount: number;
+  transaction_ref: string;
+  transaction_purpose: string;
+  user: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
 const ITEMS_TO_DISPLAY = 6;
 
 const RecentTransactionTable = () => {
   const { data, isPending, isError } = useAdminAllTransaction();
   const router = useRouter();
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const displayedTransactions =
     data?.data?.transactions?.slice(0, ITEMS_TO_DISPLAY) || [];
+
+  const handleTransactionClick = (transaction: Transaction) => {
+    setSelectedTransaction(transaction);
+    setIsDialogOpen(true);
+  };
 
   return (
     <div className="grid w-full mx-auto md:col-span-2 gap-5">
@@ -49,13 +73,13 @@ const RecentTransactionTable = () => {
       {isPending ? (
         <div className="flex justify-center items-center py-8">
           <span className="text-md md:text-lg text-gray-500">
-            Loading investments...
+            Loading transactions...
           </span>
         </div>
       ) : isError ? (
         <div className="flex justify-center items-center py-8">
           <span className="text-md md:text-lg text-red-500">
-            Failed to load investments. Please try again later.
+            Failed to load transactions. Please try again later.
           </span>
         </div>
       ) : (
@@ -74,10 +98,20 @@ const RecentTransactionTable = () => {
             </TableHeader>
             <TableBody>
               {displayedTransactions.length > 0 ? (
-                displayedTransactions.map((tx: any, index: number) => (
-                  <Dialog key={index}>
+                displayedTransactions.map((tx: Transaction, index: number) => (
+                  <Dialog 
+                    key={index}
+                    open={selectedTransaction?._id === tx._id && isDialogOpen}
+                    onOpenChange={(open) => {
+                      setIsDialogOpen(open);
+                      if (!open) setSelectedTransaction(null);
+                    }}
+                  >
                     <DialogTrigger asChild>
-                      <TableRow className="cursor-pointer">
+                      <TableRow 
+                        className="cursor-pointer hover:bg-lonestar-50/50"
+                        onClick={() => handleTransactionClick(tx)}
+                      >
                         <TableCell>
                           {new Date(tx.createdAt).toLocaleDateString("en-GB", {
                             day: "numeric",
@@ -108,81 +142,111 @@ const RecentTransactionTable = () => {
                         </TableCell>
                       </TableRow>
                     </DialogTrigger>
-                    <DialogContent className="sm:max-w-md p-0 gap-0">
-                      <DialogHeader className="pt-6 pb-2 px-4 sm:px-6 shadow">
-                        <DialogTitle className="text-left">
-                          Transaction Details
-                        </DialogTitle>
-                        <DialogDescription className="text-left">
-                          Below are more details for the selected transaction.
+                    <DialogContent className="px-0 pt-0 gap-0 sm:max-w-md max-h-[90vh] overflow-hidden flex flex-col">
+                      <DialogHeader className="px-4 py-4 text-left flex-shrink-0 shadow">
+                        <DialogTitle>Transaction Details</DialogTitle>
+                        <DialogDescription>
+                          Quick overview of transaction information
                         </DialogDescription>
                       </DialogHeader>
-                      <div className="space-y-3 text-sm pt-4 px-4 sm:px-6 max-h-60 md:max-h-full overflow-y-auto">
-                        <p>
-                          <span className="font-semibold">Customer:</span>{" "}
-                          {tx.customer}
-                        </p>
-                        <p>
-                          <span className="font-semibold">Description:</span>{" "}
-                          {tx.transaction_description}
-                        </p>
-                        <p>
-                          <span className="font-semibold">
-                            Transaction Purpose:
-                          </span>{" "}
-                          {tx.transaction_purpose}
-                        </p>
-                        <p>
-                          <span className="font-semibold">Reference:</span>{" "}
-                          {tx.transaction_ref}
-                        </p>
-                        <p>
-                          <span className="font-semibold">Amount:</span>{" "}
-                          {tx.transaction_currency}{" "}
-                          {tx.transaction_amount.toLocaleString()}
-                        </p>
-                        <p>
-                          <span className="font-semibold ">
-                            Transaction Type:
-                          </span>{" "}
-                          <span
-                            className={`px-2 py-1 rounded-sm font-semibold ${
-                              tx.transaction_type === "Credit"
-                                ? "bg-[#c0ffc0] text-green-950 border-green-950/50"
-                                : " border-yellow-950/50 bg-yellow-100 text-yellow-900"
-                            }`}
+                      <div className="px-4 space-y-4 py-4 overflow-y-auto flex-1">
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium">Customer</p>
+                          <p className="text-sm text-gray-500">
+                            {tx.customer}
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium">Description</p>
+                          <p className="text-sm text-gray-500">
+                            {tx.transaction_description}
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium">Transaction Purpose</p>
+                          <p className="text-sm text-gray-500">
+                            {tx.transaction_purpose}
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium">Reference</p>
+                          <p className="text-sm text-gray-500">
+                            {tx.transaction_ref}
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium">Amount</p>
+                          <p className="text-sm text-gray-500">
+                            {tx.transaction_currency} {tx.transaction_amount.toLocaleString()}
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm font-medium">Transaction Type</p>
+                          <p className="text-sm text-gray-500">
+                            <span
+                              className={`px-2 py-1 rounded-sm font-semibold ${
+                                tx.transaction_type === "Credit"
+                                  ? "bg-[#c0ffc0] text-green-950 border-green-950/50"
+                                  : " border-yellow-950/50 bg-yellow-100 text-yellow-900"
+                              }`}
+                            >
+                              {tx.transaction_type}
+                            </span>
+                          </p>
+                        </div>
+                        <div className="flex flex-col sm:flex-row gap-4 w-full">
+                          <div className="space-y-2 flex-1">
+                            <p className="text-sm font-medium">Payment Method</p>
+                            <p className="text-sm text-gray-500">
+                              {tx.transaction_payment_method}
+                            </p>
+                          </div>
+                          <div className="space-y-2 flex-1">
+                            <p className="text-sm font-medium">Discount</p>
+                            <p className="text-sm text-gray-500">
+                              {tx.discount}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex flex-col sm:flex-row gap-4 w-full">
+                          <div className="space-y-2 flex-1">
+                            <p className="text-sm font-medium">Created By</p>
+                            <p className="text-sm text-gray-500">
+                              {tx.createdBy}
+                            </p>
+                          </div>
+                          <div className="space-y-2 flex-1">
+                            <p className="text-sm font-medium">User ID</p>
+                            <p className="text-sm text-gray-500">
+                              {tx.user}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex flex-col sm:flex-row gap-4 w-full">
+                          <div className="space-y-2 flex-1">
+                            <p className="text-sm font-medium">Created At</p>
+                            <p className="text-sm text-gray-500">
+                              {new Date(tx.createdAt).toLocaleDateString("en-GB")}
+                            </p>
+                          </div>
+                          <div className="space-y-2 flex-1">
+                            <p className="text-sm font-medium">Updated At</p>
+                            <p className="text-sm text-gray-500">
+                              {new Date(tx.updatedAt).toLocaleDateString("en-GB")}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex px-2">
+                          <Button
+                            className="w-full mt-4"
+                            onClick={() =>
+                              router.push(`/admin/transactions/${tx._id}`)
+                            }
                           >
-                            {tx.transaction_type}
-                          </span>
-                        </p>
-                        <p>
-                          <span className="font-semibold">Payment Method:</span>{" "}
-                          {tx.transaction_payment_method}
-                        </p>
-                        <p>
-                          <span className="font-semibold">Discount:</span>{" "}
-                          {tx.discount}
-                        </p>
-                        <p>
-                          <span className="font-semibold">Created By:</span>{" "}
-                          {tx.createdBy}
-                        </p>
-                        <p>
-                          <span className="font-semibold">User ID:</span>{" "}
-                          {tx.user}
-                        </p>
-                        <p>
-                          <span className="font-semibold">Created At:</span>{" "}
-                          {new Date(tx.createdAt).toLocaleDateString("en-GB")}
-                        </p>
-                        <p>
-                          <span className="font-semibold">Updated At:</span>{" "}
-                          {new Date(tx.updatedAt).toLocaleDateString("en-GB")}
-                        </p>
+                            View Full Details
+                          </Button>
+                        </div>
                       </div>
-                      <DialogClose asChild>
-                        <Button className="mt-4 mb-3 mx-2">Close</Button>
-                      </DialogClose>
                     </DialogContent>
                   </Dialog>
                 ))
