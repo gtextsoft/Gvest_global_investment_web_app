@@ -11,6 +11,28 @@ import {
 } from "@/components/ui/table";
 import { useAllUsers } from "@/hooks/adminHooks";
 import { useRouter } from "next/navigation";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+interface Investor {
+  _id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  gender: string;
+  phone: string;
+  noOfInvestments: number;
+  account_verification: boolean;
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 const ITEMS_PER_PAGE = 10;
 
@@ -18,6 +40,8 @@ const InvestorsTable = () => {
   const router = useRouter();
   const { data, isLoading, isError } = useAllUsers();
   const [currentPage, setCurrentPage] = useState(0);
+  const [selectedInvestor, setSelectedInvestor] = useState<Investor | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const users = data?.data?.users || [];
   const totalPages = Math.ceil(users.length / ITEMS_PER_PAGE);
@@ -39,6 +63,11 @@ const InvestorsTable = () => {
     }
   };
 
+  const handleInvestorClick = (investor: Investor) => {
+    setSelectedInvestor(investor);
+    setIsDialogOpen(true);
+  };
+
   if (isLoading) return <div>Loading investors...</div>;
   if (isError) return <div>Failed to load investors.</div>;
 
@@ -56,16 +85,24 @@ const InvestorsTable = () => {
             <TableHead className="text-lonestar-900 py-4">
               Verification
             </TableHead>
-            <TableHead className="text-lonestar-900 py-4">Priority</TableHead>
+            <TableHead className="text-lonestar-900 py-4">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {paginatedInvestors.length > 0 ? (
-            paginatedInvestors.map((investor: any, index: number) => (
-              <TableRow
+            paginatedInvestors.map((investor: Investor, index: number) => (
+              <Dialog 
                 key={index}
+                open={selectedInvestor?._id === investor._id && isDialogOpen}
+                onOpenChange={(open) => {
+                  setIsDialogOpen(open);
+                  if (!open) setSelectedInvestor(null);
+                }}
+              >
+                <DialogTrigger asChild>
+                  <TableRow 
                 className="cursor-pointer hover:bg-lonestar-50/50"
-                onClick={() => router.push(`/admin/investors/${investor._id}`)}
+                    onClick={() => handleInvestorClick(investor)}
               >
                 <TableCell className="font-medium py-5 capitalize">
                   {investor.first_name} {investor.last_name}
@@ -76,7 +113,9 @@ const InvestorsTable = () => {
                   {investor.noOfInvestments}
                 </TableCell>
                 <TableCell className="text-center">
-                  {investor.account_verification === true ? "True" : "False"}
+                      {investor.account_verification
+                        ? "Verified"
+                        : "Not Verified"}
                 </TableCell>
                 <TableCell>
                   <Button
@@ -84,17 +123,77 @@ const InvestorsTable = () => {
                     size="sm"
                     onClick={(e) => {
                       e.stopPropagation();
-                        router.push(`/admin/investors/${investor._id}`);
+                          handleInvestorClick(investor);
                     }}
                   >
                     View Details
                   </Button>
                 </TableCell>
               </TableRow>
+                </DialogTrigger>
+                <DialogContent className="px-0 pt-0 gap-0 sm:max-w-md max-h-[90vh] overflow-hidden flex flex-col">
+                  <DialogHeader className="px-4 py-4 text-left flex-shrink-0 shadow">
+                    <DialogTitle>Investor Details</DialogTitle>
+                    <DialogDescription>
+                      Quick overview of investor information
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="px-4 space-y-4 py-4 overflow-y-auto flex-1">
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">Full Name</p>
+                      <p className="text-sm text-gray-500 capitalize">
+                        {investor.first_name} {investor.last_name}
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">Email</p>
+                      <p className="text-sm text-gray-500">{investor.email}</p>
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-4 w-full">
+                      <div className="space-y-2 flex-1">
+                        <p className="text-sm font-medium">Gender</p>
+                        <p className="text-sm text-gray-500 capitalize">
+                          {investor.gender}
+                        </p>
+                      </div>
+                      <div className="space-y-2 flex-1">
+                        <p className="text-sm font-medium">Phone</p>
+                        <p className="text-sm text-gray-500">
+                          {investor.phone}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">Investments</p>
+                      <p className="text-sm text-gray-500">
+                        {investor.noOfInvestments} investments
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm font-medium">Verification Status</p>
+                      <p className="text-sm text-gray-500">
+                        {investor.account_verification
+                          ? "Verified"
+                          : "Not Verified"}
+                      </p>
+                    </div>
+                    <div className="flex px-2">
+                      <Button
+                        className="w-full mt-4"
+                        onClick={() =>
+                          router.push(`/admin/investors/${investor._id}`)
+                        }
+                      >
+                        View Full Profile
+                      </Button>
+                    </div>
+                  </div>
+                </DialogContent>
+              </Dialog>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={5} className="text-center py-5 text-gray-500">
+              <TableCell colSpan={6} className="text-center py-5 text-gray-500">
                 No investors available.
               </TableCell>
             </TableRow>
@@ -103,17 +202,12 @@ const InvestorsTable = () => {
       </Table>
 
       {/* Pagination Controls */}
-      {/* Pagination Controls */}
       {users.length > ITEMS_PER_PAGE && (
         <div className="flex justify-between items-center mt-4">
           <Button
             onClick={prevPage}
             disabled={currentPage === 0}
-            className={`px-4 py-2 text-sm font-medium rounded-md ${
-              currentPage === 0
-                ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                : ""
-            }`}
+            variant="outline"
           >
             Previous
           </Button>
@@ -125,11 +219,7 @@ const InvestorsTable = () => {
           <Button
             onClick={nextPage}
             disabled={currentPage + 1 >= totalPages}
-            className={`px-4 py-2 text-sm font-medium rounded-md ${
-              currentPage + 1 >= totalPages
-                ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                : ""
-            }`}
+            variant="outline"
           >
             Next
           </Button>

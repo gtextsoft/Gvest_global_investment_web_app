@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,16 +10,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-
-interface Investment {
-  name: string;
-  actual_cost: number;
-  pending_payment: boolean;
-  daily_income: number;
-  rate?: number;
-  roi_frequency?: number;
-  [key: string]: any; // for any other dynamic fields
-}
+import { Investment } from "@/types";
 
 interface AllInvestmentsModalProps {
   investments: Investment[];

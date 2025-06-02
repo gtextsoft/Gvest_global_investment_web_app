@@ -5,6 +5,7 @@ import {
   getAllInvestment,
   getAllTransaction,
   getInvestmentDetail,
+  getInvestmentPlans,
   getListedBanks,
   getTotalReferral,
   getUserBankDetail,
@@ -32,6 +33,18 @@ export const useUserAllInvestment = () => {
 
   return allInvestment;
 };
+
+export const useInvestmentPlans = (type: string) => {
+  const investmentPlans = useQuery({
+    queryKey: ["investment-plans", type],
+    queryFn: () => getInvestmentPlans(type),
+    staleTime: 1000 * 60 * 5,
+    retry: 1,
+  });
+
+  return investmentPlans;
+};
+
 export const useUserInvestmentDetail = (id: string) => {
   const allInvestment = useQuery({
     queryKey: ["user-Investment-Detail", id],
@@ -42,6 +55,7 @@ export const useUserInvestmentDetail = (id: string) => {
 
   return allInvestment;
 };
+
 export const useUserAllTransaction = () => {
   const allInvestment = useQuery({
     queryKey: ["user-all-Transaction"],
@@ -52,6 +66,7 @@ export const useUserAllTransaction = () => {
 
   return allInvestment;
 };
+
 export const useUserAllDocument = () => {
   const allUserDocument = useQuery({
     queryKey: ["user-all-Documents"],
@@ -62,6 +77,7 @@ export const useUserAllDocument = () => {
 
   return allUserDocument;
 };
+
 export const useGetUserBankDetail = () => {
   const allUserBankDetail = useQuery({
     queryKey: ["user-bank-Detail"],
@@ -72,6 +88,7 @@ export const useGetUserBankDetail = () => {
 
   return allUserBankDetail;
 };
+
 export const useAllListedBank = () => {
   const allListedBank = useQuery({
     queryKey: ["all-listed-bank"],
@@ -82,6 +99,7 @@ export const useAllListedBank = () => {
 
   return allListedBank;
 };
+
 export const useAllReferral = () => {
   const allReferral = useQuery({
     queryKey: ["total-referral"],

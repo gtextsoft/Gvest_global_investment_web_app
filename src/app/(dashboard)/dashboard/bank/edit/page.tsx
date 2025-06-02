@@ -9,6 +9,11 @@ import { ArrowLeft } from "lucide-react";
 import { useAddBank, useAllListedBank } from "@/hooks/userProfileHook";
 import { toast } from "sonner";
 
+type Bank = {
+  code: string;
+  name: string;
+};
+
 const EditPage = () => {
   const { data, isPending: isLoading, isError } = useAllListedBank();
   const { mutate: addBank } = useAddBank();
@@ -16,7 +21,6 @@ const EditPage = () => {
 
   const [bankCode, setBankCode] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
-  
 
   const banks = useMemo(() => {
     if (!Array.isArray(data?.data)) return [];
@@ -24,7 +28,6 @@ const EditPage = () => {
   }, [data]);
 
   const handleSubmit = () => {
-    
     if (!bankCode || !accountNumber) {
       toast.info("Please select a bank and enter your account number.");
       return;
@@ -40,8 +43,12 @@ const EditPage = () => {
           alert("Bank added successfully!");
           router.push("/dashboard/bank");
         },
-        onError: (error: any) => {
-          alert(error.message || "Failed to add bank.");
+        onError: (error: unknown) => {
+          if (error instanceof Error) {
+            alert(error.message);
+          } else {
+            alert("Failed to add bank.");
+          }
         },
       }
     );
@@ -51,7 +58,9 @@ const EditPage = () => {
     if (isLoading) {
       return (
         <div className="flex justify-center items-center">
-          <span className="text-base text-gray-500">Loading Listed Banks...</span>
+          <span className="text-base text-gray-500">
+            Loading Listed Banks...
+          </span>
         </div>
       );
     }
@@ -75,7 +84,7 @@ const EditPage = () => {
         className="block appearance-none w-full bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
       >
         <option value="">--Select A Bank--</option>
-        {banks.map((item: any, i: number) => (
+        {banks.map((item: Bank, i: number) => (
           <option key={i} value={item.code}>
             {item.name}
           </option>
@@ -89,7 +98,9 @@ const EditPage = () => {
       <div className="flex flex-col gap-4 px-5 mt-8">
         <div className="flex flex-col gap-6 px-6 py-6 md:p-6 md:pb-10 bg-white rounded-xl shadow-md">
           <h2 className="font-medium text-xl">Edit Bank Details</h2>
-          <p className="text-gray-600">Please fill in your correct bank details</p>
+          <p className="text-gray-600">
+            Please fill in your correct bank details
+          </p>
 
           <div className="flex flex-col gap-4">
             <Label>Bank Name</Label>

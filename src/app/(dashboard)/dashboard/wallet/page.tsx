@@ -2,14 +2,14 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import atmSim from "../../../../../public/icons/atm_sim.svg";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+// import {
+//   Table,
+//   TableBody,
+//   TableCell,
+//   TableHead,
+//   TableHeader,
+//   TableRow,
+// } from "@/components/ui/table";
 import TransactionTable from "@/components/features/dashboard/TransactionTable";
 
 // Wallet Data
@@ -41,99 +41,100 @@ const wallets = [
 ];
 
 // Deposit History Data
-const depositHistory = [
-  {
-    date: "Jan 5, 2024",
-    investment: "Jasper Estate",
-    amount: "$2,500",
-    method: "Wallet Transfer",
-    status: "Completed",
-  },
-  {
-    date: "Dec 15, 2023",
-    investment: "Urban Heights Residences",
-    amount: "$1,200",
-    method: "Bank Transfer",
-    status: "Pending",
-  },
-  {
-    date: "Nov 30, 2023",
-    investment: "Commercial Real Estate",
-    amount: "$4,000",
-    method: "Credit Card",
-    status: "Completed",
-  },
-  {
-    date: "Oct 25, 2023",
-    investment: "Luxury Apartments",
-    amount: "$3,500",
-    method: "Bank Transfer",
-    status: "Completed",
-  },
-  {
-    date: "Sep 10, 2023",
-    investment: "Real Estate Fund",
-    amount: "$5,000",
-    method: "Crypto",
-    status: "Pending",
-  },
-];
+// const depositHistory = [
+//   {
+//     date: "Jan 5, 2024",
+//     investment: "Jasper Estate",
+//     amount: "$2,500",
+//     method: "Wallet Transfer",
+//     status: "Completed",
+//   },
+//   {
+//     date: "Dec 15, 2023",
+//     investment: "Urban Heights Residences",
+//     amount: "$1,200",
+//     method: "Bank Transfer",
+//     status: "Pending",
+//   },
+//   {
+//     date: "Nov 30, 2023",
+//     investment: "Commercial Real Estate",
+//     amount: "$4,000",
+//     method: "Credit Card",
+//     status: "Completed",
+//   },
+//   {
+//     date: "Oct 25, 2023",
+//     investment: "Luxury Apartments",
+//     amount: "$3,500",
+//     method: "Bank Transfer",
+//     status: "Completed",
+//   },
+//   {
+//     date: "Sep 10, 2023",
+//     investment: "Real Estate Fund",
+//     amount: "$5,000",
+//     method: "Crypto",
+//     status: "Pending",
+//   },
+// ];
 
 // Withdrawal History Data
-const withdrawalHistory = [
-  {
-    date: "Feb 10, 2024",
-    investment: "Jasper Estate",
-    amount: "$1,000",
-    method: "Bank Transfer",
-    status: "Processing",
-  },
-  {
-    date: "Jan 22, 2024",
-    investment: "Urban Heights Residences",
-    amount: "$800",
-    method: "Crypto",
-    status: "Completed",
-  },
-  {
-    date: "Dec 5, 2023",
-    investment: "Luxury Apartments",
-    amount: "$3,000",
-    method: "Wallet Transfer",
-    status: "Completed",
-  },
-  {
-    date: "Nov 18, 2023",
-    investment: "Commercial Real Estate",
-    amount: "$1,500",
-    method: "Bank Transfer",
-    status: "Pending",
-  },
-  {
-    date: "Oct 8, 2023",
-    investment: "Real Estate Fund",
-    amount: "$2,200",
-    method: "Credit Card",
-    status: "Completed",
-  },
-];
+// const withdrawalHistory = [
+//   {
+//     date: "Feb 10, 2024",
+//     investment: "Jasper Estate",
+//     amount: "$1,000",
+//     method: "Bank Transfer",
+//     status: "Processing",
+//   },
+//   {
+//     date: "Jan 22, 2024",
+//     investment: "Urban Heights Residences",
+//     amount: "$800",
+//     method: "Crypto",
+//     status: "Completed",
+//   },
+//   {
+//     date: "Dec 5, 2023",
+//     investment: "Luxury Apartments",
+//     amount: "$3,000",
+//     method: "Wallet Transfer",
+//     status: "Completed",
+//   },
+//   {
+//     date: "Nov 18, 2023",
+//     investment: "Commercial Real Estate",
+//     amount: "$1,500",
+//     method: "Bank Transfer",
+//     status: "Pending",
+//   },
+//   {
+//     date: "Oct 8, 2023",
+//     investment: "Real Estate Fund",
+//     amount: "$2,200",
+//     method: "Credit Card",
+//     status: "Completed",
+//   },
+// ];
 
 // Pagination Settings
-const itemsPerPage = 5;
+// const itemsPerPage = 5;
 
 const Wallet = () => {
   const [activeTab, setActiveTab] = useState("fund"); // Toggle state
   const [currentPage, setCurrentPage] = useState(1); // Pagination state
+console.log("currentPage", currentPage);
 
   // Determine which data to show based on the active tab
-  const historyData = activeTab === "fund" ? depositHistory : withdrawalHistory;
+  // const historyData = activeTab === "fund" ? depositHistory : withdrawalHistory;
 
   // Paginated data
-  const totalPages = Math.ceil(historyData.length / itemsPerPage);
-  const currentData = historyData.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  // const totalPages = Math.ceil(historyData.length / itemsPerPage);
+  // const currentData = historyData.slice(
+  //   (currentPage - 1) * itemsPerPage,
+  //   currentPage * itemsPerPage
+  // );
 
   return (
     <section className="flex flex-col w-full gap-2 px-5 pb-4">

@@ -1,8 +1,17 @@
-import { getUserProfile } from '@/services/userService'; // Your service to get user data
+import { GetServerSidePropsContext, GetServerSidePropsResult } from 'next';
+import { getUserProfile } from '@/services/userService';
 
-export async function getServerSideProps(context) {
+interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export async function getServerSideProps(
+  context: GetServerSidePropsContext
+): Promise<GetServerSidePropsResult<{ userProfile: UserProfile }>> {
   const { req } = context;
-  const token = req.cookies.auth_token; // Fetch the token from cookies
+  const token = req.cookies.auth_token;
 
   if (!token) {
     return {
@@ -14,11 +23,11 @@ export async function getServerSideProps(context) {
   }
 
   try {
-    const userProfile = await getUserProfile(token); // Get user profile data
+    const userProfile = await getUserProfile();
 
     return {
       props: {
-        userProfile, // Pass the user profile as a prop
+        userProfile,
       },
     };
   } catch (error) {

@@ -12,23 +12,23 @@ const WhyChooseGvest = () => {
   const features = [
     {
       icon: (
-        <ChartPie className="text-5xl !w-10 !h-10 md:!w-12 md:!h-12 text-[#1A237E] transition-all duration-500 ease-in-out" />
+        <ChartPie className="text-5xl !w-10 !h-10 md:!w-12 md:!h-12 text-[#03072f] transition-all duration-500 ease-in-out" />
       ),
       title: "Fractional Ownership",
       contBg: "#cacef9",
-      textColor: "text-[#1A237E]",
-      textColor2: "#5059B4",
+      textColor: "text-[#03072f]",
+      textColor2: "#03072f",
       description:
         "Invest in premium properties with as little as ₦10,000, making real estate accessible to everyone.",
     },
     {
       icon: (
-        <ChartNoAxesCombined className="text-5xl !w-10 !h-10 md:!w-12 md:!h-12 text-[#391448] transition-all duration-500 ease-in-out" />
+        <ChartNoAxesCombined className="text-5xl !w-10 !h-10 md:!w-12 md:!h-12 text-[#170121] transition-all duration-500 ease-in-out" />
       ),
       title: "Guaranteed ROI",
       contBg: "#f5d5ff",
-      textColor: "text-[#391448]",
-      textColor2: "#380C49",
+      textColor: "text-[#170121]",
+      textColor2: "#170121",
       description:
         "Earn up to 90% returns over 10 years with a transparent and predictable investment model.",
     },
@@ -45,12 +45,12 @@ const WhyChooseGvest = () => {
     },
     {
       icon: (
-        <ShieldCheck className="text-5xl !w-10 !h-10 md:!w-12 md:!h-12 text-[#008000] transition-all duration-500 ease-in-out" />
+        <ShieldCheck className="text-5xl !w-10 !h-10 md:!w-12 md:!h-12 text-[#042d04] transition-all duration-500 ease-in-out" />
       ),
       title: "Secure & Regulated",
       contBg: "#cff9cf",
-      textColor: "text-[#008000]",
-      textColor2: "#408C40",
+      textColor: "text-[#042d04]",
+      textColor2: "#042d04",
       description:
         "Backed by trusted institutions, GVest ensures top-tier security and investor protection.",
     },

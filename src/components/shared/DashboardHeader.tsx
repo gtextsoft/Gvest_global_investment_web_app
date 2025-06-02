@@ -36,7 +36,7 @@ export default function DashboardHeader() {
       <Link href={roleHref} className="text-sm sm:text-lg text-lonestar-950 hover:underline capitalize">
         {role}
       </Link>
-      {subPath && <span className="text-sm sm:text-lg text-gray-500 capitalize">/ {subPath}</span>}
+      {subPath && <span className="text-sm sm:text-lg text-gray-500 font-medium capitalize">/ {subPath}</span>}
     </div>
   );
 

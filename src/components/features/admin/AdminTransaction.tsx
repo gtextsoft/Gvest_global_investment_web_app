@@ -20,6 +20,23 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+interface Transaction {
+  transaction_type: string;
+  transaction_amount: number;
+  customer: string;
+  transaction_description: string;
+  transaction_currency: string;
+  transaction_payment_method: string;
+  discount: number;
+  transaction_ref: string;
+  transaction_purpose: string;
+  user: string;
+  createdBy: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
 const ITEMS_PER_PAGE = 7;
 
 const AdminTransactionTable = () => {
@@ -76,7 +93,7 @@ const AdminTransactionTable = () => {
             </TableHeader>
             <TableBody>
               {paginatedTransactions.length > 0 ? (
-                paginatedTransactions.map((tx: any, index: number) => (
+                paginatedTransactions.map((tx: Transaction, index: number) => (
                   <Dialog key={index}>
                     <DialogTrigger asChild>
                       <TableRow className="cursor-pointer">

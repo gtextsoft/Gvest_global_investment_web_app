@@ -1,6 +1,15 @@
 import React from "react";
 
-const ReferralContainer = ({ data }: { data: any }) => {
+interface ReferralData {
+  message: {
+    noOfTotalReferrals: number;
+    noOfApprovedReferrals: number;
+    noOfPendingReferrals: number;
+    noOfRejectedReferrals: number;
+  };
+}
+
+const ReferralContainer = ({ data }: { data: ReferralData }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {/* Total Referrals */}

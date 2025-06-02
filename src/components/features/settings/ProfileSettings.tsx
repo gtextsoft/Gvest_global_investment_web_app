@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import joe from "../../../../public/images/joe.webp";
+// import Image from "next/image";
+// import joe from "../../../../public/images/joe.webp";
 import { Edit3 } from "lucide-react";
 
 interface ProfileField {
